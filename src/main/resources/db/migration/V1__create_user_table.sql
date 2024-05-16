@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS "users";
+
+DROP SEQUENCE IF EXISTS users_seq;
+
+CREATE SEQUENCE users_seq INCREMENT BY 1 MINVALUE 0 MAXVALUE 2147483647 START WITH 1;
+
+CREATE TABLE  "public"."users"
+(
+    "id" INTEGER DEFAULT nextval('users_seq') NOT NULL PRIMARY KEY,
+    "full_name" VARCHAR(255) NOT NULL,
+    "encrypted_password" TEXT NOT NULL,
+    "email" VARCHAR(255) NOT NULL
+)
+
