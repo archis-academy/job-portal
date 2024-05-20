@@ -1,5 +1,6 @@
 package com.archisacademy.jobportal.model;
 
+import com.archisacademy.jobportal.enums.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,5 +53,7 @@ public class User {
     private List<Post> posts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserPostCommentMapper> userPostCommentMappers;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Job> jobs;
 
 }

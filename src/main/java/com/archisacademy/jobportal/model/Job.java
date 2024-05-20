@@ -1,5 +1,6 @@
 package com.archisacademy.jobportal.model;
 
+import com.archisacademy.jobportal.enums.LocationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +35,8 @@ public class Job {
     private String position;
     @Column(name = "description")
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
