@@ -7,7 +7,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/career_hive
     driverClassName: org.postgresql.Driver
     username: postgres
-    password: baran123
+    password: 12345
 
   jpa:
     properties:
