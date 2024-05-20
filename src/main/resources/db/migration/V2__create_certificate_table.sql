@@ -11,7 +11,7 @@ CREATE TABLE profiles (
     id INTEGER DEFAULT nextval('profiles_seq') NOT NULL PRIMARY KEY,
     birth_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     summary TEXT,
-    sector TEXT[]
+    sector TEXT
 );
 
 DROP TABLE IF EXISTS certificates;
@@ -30,6 +30,11 @@ CREATE TABLE certificates (
     posting_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     certificate_hours INTEGER NOT NULL,
     certificate_url VARCHAR(255) NOT NULL,
-    profile_id INTEGER NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES profiles(id)
+    profile_id INTEGER NOT NULL
 );
+
+ALTER TABLE certificates
+    ADD CONSTRAINT fk_profile_id
+    FOREIGN KEY (profile_id)
+    REFERENCES profiles(id)
+    ON DELETE CASCADE;

@@ -21,7 +21,7 @@ public class Profile {
     @Column(name = "id")
     private Long id;
     @Column(name = "sector")
-    private List<String> sector;
+    private String sector;
     @Column(name = "birth_date")
     private Timestamp birthDate;
     @Column(name = "summary")
