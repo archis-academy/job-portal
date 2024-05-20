@@ -4,9 +4,7 @@ import java.util.stream.Stream;
 
 public enum UserType {
     ADMIN("admin"),
-    USER("user"),
-    GUEST("guest");
-
+    USER("user");
     private String description;
 
     UserType(String description) {
