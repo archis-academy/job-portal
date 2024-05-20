@@ -6,30 +6,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "profiles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class User {
-
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "encrypted_password")
-    private String encryptedPassword;
-
-    @Column(name = "email")
-    private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @OneToMany(mappedBy = "profile",fetch = FetchType.LAZY)
+    private List<User> userList;
 }
