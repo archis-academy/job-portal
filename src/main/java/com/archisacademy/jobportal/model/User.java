@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +40,5 @@ public class User {
     private Timestamp updatedAt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
+
 }

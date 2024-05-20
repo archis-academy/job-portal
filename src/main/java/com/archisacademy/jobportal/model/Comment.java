@@ -7,26 +7,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-@Table(name = "profiles")
-public class Profile {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "sector")
-    private String sector;
-    @Column(name = "birth_date")
-    private Timestamp birthDate;
-    @Column(name = "summary")
-    private String summary;
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Certificate> certificates;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "user_uuid")
+    private String userUuid;
+    @Column(name = "created_date")
+    private Timestamp createdDate;
 
 }
