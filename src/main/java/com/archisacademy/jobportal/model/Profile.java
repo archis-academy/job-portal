@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -22,13 +22,10 @@ public class Profile {
     private Long id;
     @Column(name = "sector")
     private List<String> sector;
-
     @Column(name = "birth_date")
-    private LocalDate birthDate;
-
+    private Timestamp birthDate;
     @Column(name = "summary")
     private String summary;
-
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Certificate> certificates;
 }
