@@ -19,9 +19,10 @@ public class JobApplicationMapper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToMany(mappedBy = "jobApplications")
+    @ManyToMany(mappedBy = "jobApplications", cascade = CascadeType.ALL)
     private List<User> users;
-    @OneToOne(mappedBy = "jobApplicationMapper", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "job_id")
     private Job job;
 
 }

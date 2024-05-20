@@ -19,7 +19,8 @@ public class UserPostCommentMapper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "post_id")
     private Post post;
     @OneToMany(mappedBy = "userPostCommentMapper", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;

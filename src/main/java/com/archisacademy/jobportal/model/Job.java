@@ -30,7 +30,7 @@ public class Job {
     private String location;
     @Enumerated(EnumType.STRING)
     @Column(name = "location_type")
-    private String locationType;
+    private LocationType locationType;
     @Column(name = "position")
     private String position;
     @Column(name = "description")

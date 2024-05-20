@@ -1,5 +1,6 @@
 package com.archisacademy.jobportal.model;
 
+import com.archisacademy.jobportal.enums.LocationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class Experience {
     private String location;
     @Enumerated(EnumType.STRING)
     @Column(name = "location_type")
-    private String locationType;
+    private LocationType locationType;
     @Column(name = "position")
     private String position;
     @Column(name = "description")

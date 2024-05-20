@@ -35,12 +35,13 @@ public class User {
     private String address;
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    private String userType;
+    private UserType userType;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "profile_id")
     private Profile profile;
     @ManyToMany
     @JoinTable(
