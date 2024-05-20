@@ -25,5 +25,11 @@ public class Comment {
     private String userUuid;
     @Column(name = "created_date")
     private Timestamp createdDate;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+    @ManyToOne
+    @JoinColumn(name = "user_post_comment_mapper_id")
+    private UserPostCommentMapper userPostCommentMapper;
 
 }

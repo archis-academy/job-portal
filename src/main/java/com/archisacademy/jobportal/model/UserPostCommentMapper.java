@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -17,5 +19,12 @@ public class UserPostCommentMapper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private Post post;
+    @OneToMany(mappedBy = "userPostCommentMapper", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

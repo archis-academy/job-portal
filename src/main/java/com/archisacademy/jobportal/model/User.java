@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -40,5 +41,16 @@ public class User {
     private Timestamp updatedAt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
+    @ManyToMany
+    @JoinTable(
+            name = "user_job_applications",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_application_id")
+    )
+    private List<JobApplicationMapper> jobApplications;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserPostCommentMapper> userPostCommentMappers;
 
 }

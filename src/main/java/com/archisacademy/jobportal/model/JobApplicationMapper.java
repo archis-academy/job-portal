@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -17,5 +19,9 @@ public class JobApplicationMapper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @ManyToMany(mappedBy = "jobApplications")
+    private List<User> users;
+    @OneToOne(mappedBy = "jobApplicationMapper", cascade = CascadeType.ALL)
+    private Job job;
 
 }

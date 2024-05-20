@@ -20,5 +20,7 @@ public class Skills {
     private String name;
     @Column(name = "description")
     private String description;
-
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 }

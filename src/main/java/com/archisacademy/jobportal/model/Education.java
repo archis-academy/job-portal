@@ -27,5 +27,7 @@ public class Education {
     private Timestamp graduationDate;
     @Column(name = "description")
     private String description;
-
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 }
