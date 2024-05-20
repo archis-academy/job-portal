@@ -8,11 +8,12 @@ CREATE TABLE "public"."experiences"
 (
     "id" INTEGER DEFAULT nextval('experiences_seq') NOT NULL PRIMARY KEY,
     "company_name" VARCHAR(255) NOT NULL,
-    "start_date" DATE NOT NULL,
-    "end_date" DATE,
+    "start_date" TIMESTAMP NOT NULL,
+    "is_active" BOOLEAN NOT NULL,
+    "end_date" TIMESTAMP,
     "location" VARCHAR(255),
     "location_type" VARCHAR(255),
     "position" VARCHAR(255) NOT NULL,
     "description" TEXT,
-    "profile_title" VARCHAR(255) NOT NULL
+    profile_id INTEGER NOT NULL, FOREIGN KEY (profile_id) REFERENCES profiles(id)
 );

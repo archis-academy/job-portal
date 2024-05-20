@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -25,17 +26,20 @@ public class Experience {
     private String companyName;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private Timestamp startDate;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private Timestamp endDate;
 
     @Column(name = "location")
     private String location;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "location_type")
-    private LocationType locationType;
+    private String locationType;
 
     @Column(name = "position")
     private String position;
@@ -43,6 +47,7 @@ public class Experience {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "profile_title")
-    private String profileTitle;
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 }
