@@ -30,11 +30,9 @@ CREATE TABLE certificates (
     posting_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     certificate_hours INTEGER NOT NULL,
     certificate_url VARCHAR(255) NOT NULL,
-    profile_id INTEGER NOT NULL
-);
-
-ALTER TABLE certificates
+    profile_id INTEGER NOT NULL,
     ADD CONSTRAINT fk_profile_id
-    FOREIGN KEY (profile_id)
-    REFERENCES profiles(id)
-    ON DELETE CASCADE;
+        FOREIGN KEY (profile_id)
+        REFERENCES profiles(id)
+        ON DELETE CASCADE
+);
