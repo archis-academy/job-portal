@@ -57,9 +57,9 @@ public class User {
     private List<UserPostCommentMapper> userPostCommentMappers;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Job> jobs;
-
-    @OneToMany(mappedBy = "connectedUser", cascade = CascadeType.ALL)
-    private Set<Connection> connectedUSer;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Connection> connectedUser;
     @OneToMany(mappedBy = "requestedUser")
     private Set<Connection> connectionReceived;
+
 }
