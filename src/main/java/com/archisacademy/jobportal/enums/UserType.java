@@ -3,7 +3,7 @@ package com.archisacademy.jobportal.enums;
 import java.util.stream.Stream;
 
 public enum UserType {
-    ADMIN("admin"),
+    ADMIN("admin"), // TODO: 24.05.2024  be a refactor to COMPANY
     USER("user");
     private String description;
 
