@@ -23,7 +23,7 @@ CREATE SEQUENCE certificates_seq
     MAXVALUE 2147483647
     START WITH 1;
 
-CREATE TABLE certificates (
+CREATE TABLE "public"."certificates" (
     id INTEGER DEFAULT nextval('certificates_seq') NOT NULL PRIMARY KEY,
     certificate_name VARCHAR(255) NOT NULL,
     company_name VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE certificates (
     certificate_hours INTEGER NOT NULL,
     certificate_url VARCHAR(255) NOT NULL,
     profile_id INTEGER NOT NULL,
-    ADD CONSTRAINT fk_profile_id
+    CONSTRAINT fk_profile_id
         FOREIGN KEY (profile_id)
         REFERENCES profiles(id)
         ON DELETE CASCADE
