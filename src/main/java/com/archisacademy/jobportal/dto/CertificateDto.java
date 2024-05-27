@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CertificateDto {
-    private String certificateName;
+    private String name;
     private String companyName;
     private Timestamp postingDate;
-    private int certificateHours;
-    private String certificateUrl;
+    private int hours;
+    private String url;
 
 }

@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class PostDto {
     private String description;
-    private String postUrl;
-    private String userUuids;
+    private String imageUrl;
+    private String likedUsers;
     private Timestamp createdDate;
 
 }

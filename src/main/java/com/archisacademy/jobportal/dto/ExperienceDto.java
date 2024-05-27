@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,8 +17,9 @@ public class ExperienceDto {
     private Timestamp startDate;
     private Timestamp endDate;
     private String location;
-    private LocationType locationType;
+    private String locationType;
     private String position;
     private String description;
+    private List<SkillsDto> usedSkills;
 
 }

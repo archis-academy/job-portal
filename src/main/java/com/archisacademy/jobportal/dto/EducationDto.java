@@ -14,5 +14,6 @@ public class EducationDto {
     private String department;
     private Timestamp graduationDate;
     private String description;
+    private Timestamp startDate;
 
 }

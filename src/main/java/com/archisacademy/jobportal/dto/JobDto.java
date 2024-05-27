@@ -15,7 +15,7 @@ public class JobDto {
     private Timestamp startDate;
     private Timestamp endDate;
     private String location;
-    private LocationType locationType;
+    private String locationType;
     private String position;
     private String description;
 

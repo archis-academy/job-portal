@@ -22,10 +22,10 @@ public class Post {
     private Long id;
     @Column(name = "description")
     private String description;
-    @Column(name = "post_url")
-    private String postUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
     @Column(name = "user_uuids")
-    private String userUuids;
+    private String likedUsers;
     @Column(name = "created_date")
     private Timestamp createdDate;
     @ManyToOne

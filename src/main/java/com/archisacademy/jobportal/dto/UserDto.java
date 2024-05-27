@@ -1,5 +1,4 @@
 package com.archisacademy.jobportal.dto;
-import com.archisacademy.jobportal.enums.UserType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +16,7 @@ public class UserDto {
     private String encryptedPassword;
     private String telephone;
     private String address;
-    private UserType userType;
+    private String userRole;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
