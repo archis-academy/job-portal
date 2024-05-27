@@ -10,15 +10,12 @@ CREATE TABLE projects (
     start_date TIMESTAMP,
     end_date TIMESTAMP,
     position VARCHAR(255) NOT NULL,
-    status BOOLEAN,
     url VARCHAR(255),
     technologies TEXT,
     description TEXT,
-    profile_id INTEGER NOT NULL
+    profile_id INTEGER NOT NULL,
+    CONSTRAINT fk_profile
+    FOREIGN KEY (profile_id) REFERENCES profiles(id);
+
 );
 
--- V6__add_foreign_key_to_projects_table.sql
-
-ALTER TABLE projects
-ADD CONSTRAINT fk_profile
-FOREIGN KEY (profile_id) REFERENCES profiles(id);

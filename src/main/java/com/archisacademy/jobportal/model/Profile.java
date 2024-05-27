@@ -34,5 +34,7 @@ public class Profile {
     private List<Experience> experiences;
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Education> educations;
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects;
 
 }

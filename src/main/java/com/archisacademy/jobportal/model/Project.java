@@ -28,8 +28,6 @@ public class Project {
     private Timestamp endDate;
     @Column(name = "position")
     private String position;
-    @Column(name = "status")
-    private Boolean status;
     @Column(name = "url")
     private String url;
     @Column(name = "technologies")
