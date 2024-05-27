@@ -3,7 +3,7 @@ package com.archisacademy.jobportal.enums;
 import java.util.stream.Stream;
 
 public enum UserRole {
-    ADMIN("admin"),
+    COMPANY("company"),
     USER("user");
     private String description;
 
