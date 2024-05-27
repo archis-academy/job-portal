@@ -9,10 +9,14 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EducationDto {
-    private String university;
-    private String department;
-    private Timestamp graduationDate;
+public class Project {
+    private String projectName;
+    private Timestamp startDate;
+    private Timestamp endDate;
+    private String position;
+    private Boolean status;
+    private String url;
+    private String technologies;
     private String description;
 
 }
