@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -56,5 +57,9 @@ public class User {
     private List<UserPostCommentMapper> userPostCommentMappers;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Job> jobs;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Connection> connectedUsers;
+    @OneToMany(mappedBy = "requestedUser")
+    private Set<Connection> receivedConnections;
 
 }

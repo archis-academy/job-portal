@@ -1,5 +1,6 @@
 package com.archisacademy.jobportal.model;
 
+import com.archisacademy.jobportal.enums.LocationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,18 +14,24 @@ import java.sql.Timestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "educations")
-public class Education {
+@Table(name = "projects")
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "university")
-    private String university;
-    @Column(name = "department")
-    private String department;
-    @Column(name = "graduation_date")
-    private Timestamp graduationDate;
+    @Column(name = "project_name")
+    private String projectName;
+    @Column(name = "start_date")
+    private Timestamp startDate;
+    @Column(name = "end_date")
+    private Timestamp endDate;
+    @Column(name = "position")
+    private String position;
+    @Column(name = "url")
+    private String url;
+    @Column(name = "technologies")
+    private String technologies;
     @Column(name = "description")
     private String description;
     @ManyToOne
