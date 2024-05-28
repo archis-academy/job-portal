@@ -9,8 +9,8 @@ CREATE TABLE connections (
     status VARCHAR(255) NOT NULL,
     request_date TIMESTAMP NOT NULL,
     user_id INTEGER NOT NULL,
-    connected_user_id INTEGER NOT NULL,
+    connected_user_id INTEGER NOT NULL
     CONSTRAINT fk_connections_user FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_connections_connected_user FOREIGN KEY (connected_user_id) REFERENCES users(id),
-    CONSTRAINT unique_connections UNIQUE (user_id, connected_user_id)
+    CONSTRAINT unique_connections UNIQUE (user_id, connected_user_id);
 );
