@@ -1,4 +1,4 @@
--- V1__create_projects_table.sql
+-- V6__create_projects_table.sql
 DROP TABLE IF EXISTS projects;
 DROP SEQUENCE IF EXISTS projects_seq;
 
@@ -15,11 +15,6 @@ CREATE TABLE projects (
     description TEXT,
     profile_id INTEGER NOT NULL,
     CONSTRAINT fk_profile
-<<<<<<< HEAD
     FOREIGN KEY (profile_id) REFERENCES profiles(id)
-=======
-    FOREIGN KEY (profile_id) REFERENCES profiles(id);
->>>>>>> c29905fac51992df9066688a10213115afedb23e
 
 );
-
