@@ -2,12 +2,12 @@ package com.archisacademy.jobportal.enums;
 
 import java.util.stream.Stream;
 
-public enum UserType {
+public enum UserRole {
     COMPANY("company"),
     USER("user");
     private String description;
 
-    UserType(String description) {
+    UserRole(String description) {
         this.description = description;
     }
 
@@ -19,8 +19,8 @@ public enum UserType {
         this.description = description;
     }
 
-    public static UserType value(String description) {
-        return Stream.of(UserType.values())
+    public static UserRole value(String description) {
+        return Stream.of(UserRole.values())
                 .filter(x -> x.getDescription().equals(description))
                 .findFirst()
                 .orElse(null);
