@@ -20,7 +20,7 @@ public class JobPortalServerErrorAttributes extends DefaultErrorAttributes {
 
         Map<String,Object> errorAttributes = new HashMap<>();
         errorAttributes.put("status",defaultAttributes.get("status"));
-        errorAttributes.put("timstamp",defaultAttributes.get("timestamp"));
+        errorAttributes.put("timestamp",defaultAttributes.get("timestamp"));
         Object message = defaultAttributes.get("message");
         message = "No message available".equals(message)? defaultAttributes.get("message"):message;
         errorAttributes.put("message",message);
