@@ -1,10 +1,12 @@
 package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.SkillsDto;
+import com.archisacademy.jobportal.exceptions.JobPortalServerException;
 import com.archisacademy.jobportal.model.Skills;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.SkillsRepository;
 import com.archisacademy.jobportal.services.SkillsService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class SkillsServiceImpl implements SkillsService {
         skills.setName(skillsDto.getName());
         skills.setDescription(skillsDto.getDescription());
         skills.setProfile(profileRepository.findById(profileId)
-                .orElseThrow(() -> new RuntimeException("Profile not found with id: " + profileId)));
+                .orElseThrow(() -> new JobPortalServerException("Profile not found with id: " + profileId, HttpStatus.NOT_FOUND)));
 
         skillsRepository.save(skills);
         return "Skill created successfully";
@@ -41,7 +43,7 @@ public class SkillsServiceImpl implements SkillsService {
     @Override
     public String updateSkill(long skillId, SkillsDto skillsDto) {
         Skills existingSkill = skillsRepository.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("Skill not found with id: " + skillId));
+                .orElseThrow(() -> new JobPortalServerException("Skill not found with id: " + skillId, HttpStatus.NOT_FOUND));
 
         existingSkill.setName(skillsDto.getName());
         existingSkill.setDescription(skillsDto.getDescription());
@@ -59,10 +61,11 @@ public class SkillsServiceImpl implements SkillsService {
 
     @Override
     public SkillsDto getSkillById(Long id) {
-        Optional<Skills> skills = skillsRepository.findById(id);
-        if (skills.isEmpty()){
-            throw new RuntimeException("Skill not found with id: " + id);
+        Optional<Skills> optionalSkill = skillsRepository.findById(id);
+        if (optionalSkill.isEmpty()){
+            new JobPortalServerException("Skill not found with id: " + id, HttpStatus.NOT_FOUND);
         }
-        return new SkillsDto(skills.get().getName(), skills.get().getDescription());
+        Skills skill = optionalSkill.get();
+        return new SkillsDto(skill.getName(), skill.getDescription());
     }
 }
