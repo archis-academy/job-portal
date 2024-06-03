@@ -48,6 +48,8 @@ public class SkillsServiceImpl implements SkillsService {
         existingSkill.setName(skillsDto.getName());
         existingSkill.setDescription(skillsDto.getDescription());
 
+        skillsRepository.save(existingSkill);
+
         return "Skill updated successfully";
     }
 
