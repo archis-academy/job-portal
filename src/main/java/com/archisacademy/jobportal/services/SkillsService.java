@@ -1,13 +1,14 @@
 package com.archisacademy.jobportal.services;
 
+import com.archisacademy.jobportal.dto.SkillsDto;
 import com.archisacademy.jobportal.model.Skills;
 
 import java.util.List;
 
 public interface SkillsService {
-    String addSkill(Skills skill);
-    void deleteSkill(String skillId);
-    String updateSkill(String skillId, Skills skill);
-    List<Skills> listSkills();
-    Skills searchSkill(long skillId);
+    String createSkill(SkillsDto skill, Long profileId);
+    void deleteSkill(Long id);
+    String updateSkill(long skillId, SkillsDto skill);
+    List<SkillsDto> getAllSkills();
+    SkillsDto getSkillById(Long id);
 }

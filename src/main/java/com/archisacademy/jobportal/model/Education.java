@@ -25,6 +25,8 @@ public class Education {
     private String department;
     @Column(name = "graduation_date")
     private Timestamp graduationDate;
+    @Column(name = "start_date")
+    private Timestamp startDate;
     @Column(name = "description")
     private String description;
     @ManyToOne

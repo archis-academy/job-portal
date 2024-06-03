@@ -1,6 +1,6 @@
 package com.archisacademy.jobportal.model;
 
-import com.archisacademy.jobportal.enums.UserType;
+import com.archisacademy.jobportal.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +35,8 @@ public class User {
     @Column(name = "address")
     private String address;
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_type")
-    private UserType userType;
+    @Column(name = "user_role")
+    private UserRole userRole;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
