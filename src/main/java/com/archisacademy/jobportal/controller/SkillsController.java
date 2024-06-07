@@ -17,8 +17,8 @@ public class SkillsController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createSkills(@RequestBody SkillsDto skillsDto, @RequestParam Long profileId){
-        return ResponseEntity.ok(skillsService.createSkill(skillsDto, profileId));
+    public ResponseEntity<String> createSkills(@RequestBody SkillsDto skillsDto){
+        return ResponseEntity.ok(skillsService.createSkill(skillsDto));
     }
 
     @DeleteMapping("/{id}")
@@ -35,8 +35,7 @@ public class SkillsController {
 
     @GetMapping
     public ResponseEntity<List<SkillsDto>> getAllSkills() {
-        List<SkillsDto> skillsDtos = skillsService.getAllSkills();
-        return ResponseEntity.ok(skillsDtos);
+        return ResponseEntity.ok(skillsService.getAllSkills());
     }
 
     @GetMapping("/{id}")
