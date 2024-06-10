@@ -8,6 +8,7 @@ import com.archisacademy.jobportal.model.Education;
 import com.archisacademy.jobportal.repositories.EducationRepository;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.EducationService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,11 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public String createEducation(EducationDto educationDto) {
+        if (educationDto.getStartDate().after(educationDto.getGraduationDate())) {
+            throw new IllegalArgumentException("Graduation date cannot be before start date.");
+        }
         Education education = educationMapper.toEntity(educationDto);
         education.setProfile(profileRepository.findById(educationDto.getProfileId())
                 .orElseThrow(() -> {
@@ -40,6 +45,7 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public String deleteEducation(Long id) {
         if (!educationRepository.existsById(id)) {
             LOGGER.log("Education not found with id: " + id, HttpStatus.NOT_FOUND);
@@ -50,6 +56,7 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public String updateEducation(long educationId, EducationDto educationDto) {
         Education existingEducation = educationRepository.findById(educationId)
                 .orElseThrow(() -> {
