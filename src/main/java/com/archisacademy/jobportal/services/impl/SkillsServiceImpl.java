@@ -27,15 +27,7 @@ public class SkillsServiceImpl implements SkillsService {
 
     @Override
     public String createSkill(SkillsDto skillsDto) {
-        Skills skills = new Skills();
-        skills.setName(skillsDto.getName());
-        skills.setDescription(skillsDto.getDescription());
-        skills.setProfile(profileRepository.findById(skillsDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
-
+        Skills skills = convertToSkills(skillsDto);
         skillsRepository.save(skills);
         return "Skill created successfully";
     }
@@ -73,8 +65,7 @@ public class SkillsServiceImpl implements SkillsService {
         if (optionalSkill.isEmpty()){
             LOGGER.log("Skill not found with id: " + id, HttpStatus.NOT_FOUND);
         }
-        Skills skill = optionalSkill.get();
-        return convertToSkillsDto(skill);
+        return convertToSkillsDto(optionalSkill.get());
     }
 
 
