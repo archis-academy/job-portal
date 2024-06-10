@@ -17,5 +17,5 @@ public class EducationDto {
     private Timestamp graduationDate;
     private String description;
     private Timestamp startDate;
-
+    private Long profileId;
 }

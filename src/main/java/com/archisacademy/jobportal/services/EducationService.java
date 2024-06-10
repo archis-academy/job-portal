@@ -1,20 +1,18 @@
 package com.archisacademy.jobportal.services;
 
 import com.archisacademy.jobportal.dto.EducationDto;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
-@Service
 public interface EducationService {
 
-    String createEducation(EducationDto education);
+    String createEducation(EducationDto educationDto);
 
     String deleteEducation(Long id);
 
-    String updateEducation(long educationId, EducationDto education);
+    String updateEducation(long educationId, EducationDto educationDto);
 
-    List<EducationDto> getAllEducations();
+    Page<EducationDto> getAllEducations(int pageNo, int pageSize);
 
     EducationDto getEducationsById(Long id);
 
