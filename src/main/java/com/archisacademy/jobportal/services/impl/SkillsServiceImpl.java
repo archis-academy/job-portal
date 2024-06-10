@@ -33,7 +33,7 @@ public class SkillsServiceImpl implements SkillsService {
         skills.setProfile(profileRepository.findById(skillsDto.getProfileId())
                 .orElseThrow(() -> {
                     LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    return null;
                 }));
 
         skillsRepository.save(skills);
@@ -50,7 +50,7 @@ public class SkillsServiceImpl implements SkillsService {
         Skills existingSkill = skillsRepository.findById(skillId)
                 .orElseThrow(() -> {
                     LOGGER.log("Skill not found with id: " + skillId, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Skill not found with id: " + skillId, HttpStatus.NOT_FOUND);
+                    return null;
                 });
 
         existingSkill.setName(skillsDto.getName());
@@ -72,7 +72,6 @@ public class SkillsServiceImpl implements SkillsService {
         Optional<Skills> optionalSkill = skillsRepository.findById(id);
         if (optionalSkill.isEmpty()){
             LOGGER.log("Skill not found with id: " + id, HttpStatus.NOT_FOUND);
-            new JobPortalServerException("Skill not found with id: " + id, HttpStatus.NOT_FOUND);
         }
         Skills skill = optionalSkill.get();
         return convertToSkillsDto(skill);
@@ -94,7 +93,7 @@ public class SkillsServiceImpl implements SkillsService {
                 .profile(profileRepository.findById(skillsDto.getProfileId())
                         .orElseThrow(() -> {
                             LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
-                            return new JobPortalServerException("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                            return null;
                         }))
                 .build();
     }
