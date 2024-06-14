@@ -39,8 +39,7 @@ public class SkillsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SkillsDto> getSkillById(@PathVariable Long id) {
-        SkillsDto skillsDto = skillsService.getSkillById(id);
-        return ResponseEntity.ok(skillsDto);
+        return new ResponseEntity<>(skillsService.getSkillById(id), HttpStatus.OK);
     }
 
     @GetMapping("/search")
