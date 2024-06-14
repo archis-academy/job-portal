@@ -28,13 +28,19 @@ public class SkillsServiceImpl implements SkillsService {
     @Override
     public String createSkill(SkillsDto skillsDto) {
         Skills skills = convertToSkills(skillsDto);
+        skills.setProfile(profileRepository.findById(skillsDto.getProfileId())
+                .orElseThrow(() -> {
+                    LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    return null;
+                }));
         skillsRepository.save(skills);
         return "Skill created successfully";
     }
 
     @Override
-    public void deleteSkill(Long id) {
+    public String deleteSkill(Long id) {
         skillsRepository.deleteById(id);
+        return "Skill deleted successfully with this  id: " + id;
     }
 
     @Override
@@ -47,6 +53,11 @@ public class SkillsServiceImpl implements SkillsService {
 
         existingSkill.setName(skillsDto.getName());
         existingSkill.setDescription(skillsDto.getDescription());
+        existingSkill.setProfile(profileRepository.findById(skillsDto.getProfileId())
+                .orElseThrow(() -> {
+                    LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    return null;
+                }));
 
         skillsRepository.save(existingSkill);
 
@@ -81,11 +92,6 @@ public class SkillsServiceImpl implements SkillsService {
         return Skills.builder()
                 .name(skillsDto.getName())
                 .description(skillsDto.getDescription())
-                .profile(profileRepository.findById(skillsDto.getProfileId())
-                        .orElseThrow(() -> {
-                            LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
-                            return null;
-                        }))
                 .build();
     }
 }

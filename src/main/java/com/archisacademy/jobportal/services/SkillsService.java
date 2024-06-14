@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SkillsService {
     String createSkill(SkillsDto skill);
-    void deleteSkill(Long id);
+    String deleteSkill(Long id);
     String updateSkill(long skillId, SkillsDto skill);
     List<SkillsDto> getAllSkills();
     SkillsDto getSkillById(Long id);
