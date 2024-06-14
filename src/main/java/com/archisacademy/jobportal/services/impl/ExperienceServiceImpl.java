@@ -35,13 +35,13 @@ public class ExperienceServiceImpl implements ExperienceService {
     public String createExperience(ExperienceDto experienceDto) {
 
         if (experienceDto.getStartDate().after(experienceDto.getEndDate())) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
+            LOGGER.log("End date cannot be before start date.", HttpStatus.BAD_REQUEST);
         }
         Experience experience = experienceMapper.toEntity(experienceDto);
         experience.setProfile(profileRepository.findById(experienceDto.getProfileId())
                 .orElseThrow(() -> {
                     LOGGER.log("Profile not found with id: " + experienceDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Profile not found with id: " + experienceDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    return null;
                 }));
         experienceRepository.save(experience);
         return "Experience created successfully";
@@ -53,7 +53,7 @@ public class ExperienceServiceImpl implements ExperienceService {
         Experience experience = experienceRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.log("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
+                    return null;
                 });
 
         experienceRepository.deleteById(id);
@@ -68,7 +68,7 @@ public class ExperienceServiceImpl implements ExperienceService {
         Experience existingExperience = experienceRepository.findById(experienceId)
                 .orElseThrow(() -> {
                     LOGGER.log("Experience not found with id: " + experienceId, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Experience not found with id: " + experienceId, HttpStatus.NOT_FOUND);
+                    return null;
                 });
 
         existingExperience.setCompanyName(experienceDto.getCompanyName());
@@ -96,7 +96,7 @@ public class ExperienceServiceImpl implements ExperienceService {
         Experience experience = experienceRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.log("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
+                    return null;
                 });
         return experienceMapper.toDto(experience);
     }
