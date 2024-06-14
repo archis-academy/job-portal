@@ -1,7 +1,7 @@
 package com.archisacademy.jobportal.dto;
-import com.archisacademy.jobportal.enums.LocationType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ExperienceDto {
     private String companyName;
     private boolean isActive;
@@ -21,5 +22,5 @@ public class ExperienceDto {
     private String position;
     private String description;
     private List<SkillsDto> usedSkills;
-
+    private Long profileId;
 }
