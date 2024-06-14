@@ -3,6 +3,8 @@ package com.archisacademy.jobportal.services.impl;
 import com.archisacademy.jobportal.dto.SkillsDto;
 import com.archisacademy.jobportal.exceptions.JobPortalServerException;
 import com.archisacademy.jobportal.loggers.MainLogger;
+import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
+import com.archisacademy.jobportal.loggers.messages.SkillsMessage;
 import com.archisacademy.jobportal.model.Skills;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.SkillsRepository;
@@ -30,24 +32,24 @@ public class SkillsServiceImpl implements SkillsService {
         Skills skills = convertToSkills(skillsDto);
         skills.setProfile(profileRepository.findById(skillsDto.getProfileId())
                 .orElseThrow(() -> {
-                    LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
                     return null;
                 }));
         skillsRepository.save(skills);
-        return "Skill created successfully";
+        return SkillsMessage.SKILL_CREATED + skills.getId();
     }
 
     @Override
     public String deleteSkill(Long id) {
         skillsRepository.deleteById(id);
-        return "Skill deleted successfully with this  id: " + id;
+        return SkillsMessage.SKILL_DELETED + id;
     }
 
     @Override
     public String updateSkill(long skillId, SkillsDto skillsDto) {
         Skills existingSkill = skillsRepository.findById(skillId)
                 .orElseThrow(() -> {
-                    LOGGER.log("Skill not found with id: " + skillId, HttpStatus.NOT_FOUND);
+                    LOGGER.log(SkillsMessage.SKIILS_NOT_FOUND + skillId, HttpStatus.NOT_FOUND);
                     return null;
                 });
 
@@ -55,13 +57,13 @@ public class SkillsServiceImpl implements SkillsService {
         existingSkill.setDescription(skillsDto.getDescription());
         existingSkill.setProfile(profileRepository.findById(skillsDto.getProfileId())
                 .orElseThrow(() -> {
-                    LOGGER.log("Profile not found with id: " + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
                     return null;
                 }));
 
         skillsRepository.save(existingSkill);
 
-        return "Skill updated successfully";
+        return SkillsMessage.SKILL_UPDATED + skillId;
     }
 
     @Override
@@ -74,9 +76,17 @@ public class SkillsServiceImpl implements SkillsService {
     public SkillsDto getSkillById(Long id) {
         Optional<Skills> optionalSkill = skillsRepository.findById(id);
         if (optionalSkill.isEmpty()){
-            LOGGER.log("Skill not found with id: " + id, HttpStatus.NOT_FOUND);
+            LOGGER.log(SkillsMessage.SKIILS_NOT_FOUND + id, HttpStatus.NOT_FOUND);
         }
         return convertToSkillsDto(optionalSkill.get());
+    }
+
+    @Override
+    public List<SkillsDto> searchSkills(String keyword) {
+        return skillsRepository.findByNameContainingIgnoreCase(keyword)
+                .stream()
+                .map(this::convertToSkillsDto)
+                .collect(Collectors.toList());
     }
 
 

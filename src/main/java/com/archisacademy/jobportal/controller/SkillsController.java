@@ -42,4 +42,9 @@ public class SkillsController {
         SkillsDto skillsDto = skillsService.getSkillById(id);
         return ResponseEntity.ok(skillsDto);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SkillsDto>> searchSkills(@RequestParam String keyword) {
+        return new ResponseEntity<>(skillsService.searchSkills(keyword), HttpStatus.OK);
+    }
 }

@@ -11,4 +11,5 @@ public interface SkillsService {
     String updateSkill(long skillId, SkillsDto skill);
     List<SkillsDto> getAllSkills();
     SkillsDto getSkillById(Long id);
+    List<SkillsDto> searchSkills(String keyword);
 }
