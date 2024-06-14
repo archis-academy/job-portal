@@ -3,6 +3,7 @@ package com.archisacademy.jobportal.services.impl;
 import com.archisacademy.jobportal.dto.ExperienceDto;
 import com.archisacademy.jobportal.exceptions.JobPortalServerException;
 import com.archisacademy.jobportal.loggers.MainLogger;
+import com.archisacademy.jobportal.loggers.messages.ExperienceMessage;
 import com.archisacademy.jobportal.mapper.ExperienceMapper;
 import com.archisacademy.jobportal.model.Experience;
 import com.archisacademy.jobportal.repositories.ExperienceRepository;
@@ -35,16 +36,16 @@ public class ExperienceServiceImpl implements ExperienceService {
     public String createExperience(ExperienceDto experienceDto) {
 
         if (experienceDto.getStartDate().after(experienceDto.getEndDate())) {
-            LOGGER.log("End date cannot be before start date.", HttpStatus.BAD_REQUEST);
+            LOGGER.log(ExperienceMessage.END_DATE_BEFORE_START_DATE, HttpStatus.BAD_REQUEST);
         }
         Experience experience = experienceMapper.toEntity(experienceDto);
         experience.setProfile(profileRepository.findById(experienceDto.getProfileId())
                 .orElseThrow(() -> {
-                    LOGGER.log("Profile not found with id: " + experienceDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    LOGGER.log(ExperienceMessage.PROFILE_NOT_FOUND + experienceDto.getProfileId(), HttpStatus.NOT_FOUND);
                     return null;
                 }));
         experienceRepository.save(experience);
-        return "Experience created successfully";
+        return ExperienceMessage.EXPERIENCE_CREATED_SUCCESS;
     }
 
     @Override
@@ -52,14 +53,14 @@ public class ExperienceServiceImpl implements ExperienceService {
     public String deleteExperience(Long id) {
         Experience experience = experienceRepository.findById(id)
                 .orElseThrow(() -> {
-                    LOGGER.log("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
+                    LOGGER.log(ExperienceMessage.EXPERIENCE_NOT_FOUND + id, HttpStatus.NOT_FOUND);
                     return null;
                 });
 
         experienceRepository.deleteById(id);
 
-        LOGGER.log("Experience with id " + id + " deleted successfully.");
-        return "Experience deleted successfully";
+        LOGGER.log(String.format(ExperienceMessage.EXPERIENCE_DELETED_LOG, id));
+        return ExperienceMessage.EXPERIENCE_DELETED_SUCCESS;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     public String updateExperience(long experienceId, ExperienceDto experienceDto) {
         Experience existingExperience = experienceRepository.findById(experienceId)
                 .orElseThrow(() -> {
-                    LOGGER.log("Experience not found with id: " + experienceId, HttpStatus.NOT_FOUND);
+                    LOGGER.log(ExperienceMessage.EXPERIENCE_NOT_FOUND + experienceId, HttpStatus.NOT_FOUND);
                     return null;
                 });
 
@@ -81,7 +82,7 @@ public class ExperienceServiceImpl implements ExperienceService {
         existingExperience.setDescription(experienceDto.getDescription());
 
         experienceRepository.save(existingExperience);
-        return "Experience updated successfully";
+        return ExperienceMessage.EXPERIENCE_UPDATED_SUCCESS;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     public ExperienceDto getExperienceById(Long id) {
         Experience experience = experienceRepository.findById(id)
                 .orElseThrow(() -> {
-                    LOGGER.log("Experience not found with id: " + id, HttpStatus.NOT_FOUND);
+                    LOGGER.log(ExperienceMessage.EXPERIENCE_NOT_FOUND + id, HttpStatus.NOT_FOUND);
                     return null;
                 });
         return experienceMapper.toDto(experience);
