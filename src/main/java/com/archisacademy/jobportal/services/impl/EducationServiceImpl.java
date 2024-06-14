@@ -10,10 +10,14 @@ import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.EducationService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EducationServiceImpl implements EducationService {
@@ -79,7 +83,10 @@ public class EducationServiceImpl implements EducationService {
     public Page<EducationDto> getAllEducations(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Education> educations = educationRepository.findAll(pageable);
-        return educations.map(educationMapper::toDto);
+        List<EducationDto> educationDtoList = educations.getContent().stream()
+                .map(educationMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(educationDtoList, pageable, educations.getTotalElements());
     }
 
     @Override
