@@ -32,6 +32,11 @@ public class EducationServiceImpl implements EducationService {
         this.educationMapper = educationMapper;
     }
 
+    /**
+     *  This method is responsible for create an education record for user
+     * @param educationDto education dto
+     * @return a String
+     */
     @Override
     @Transactional
     public String createEducation(EducationDto educationDto) {
@@ -74,7 +79,7 @@ public class EducationServiceImpl implements EducationService {
         existingEducation.setGraduationDate(educationDto.getGraduationDate());
         existingEducation.setDescription(educationDto.getDescription());
         existingEducation.setStartDate(educationDto.getStartDate());
-
+        //todo: we should update end date as well
         educationRepository.save(existingEducation);
         return EducationMessage.EDUCATION_UPDATED_SUCCESS;
     }
