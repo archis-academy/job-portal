@@ -1,7 +1,6 @@
 package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.ExperienceDto;
-import com.archisacademy.jobportal.exceptions.JobPortalServerException;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ExperienceMessage;
 import com.archisacademy.jobportal.mapper.ExperienceMapper;
@@ -11,10 +10,14 @@ import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.ExperienceService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -89,7 +92,10 @@ public class ExperienceServiceImpl implements ExperienceService {
     public Page<ExperienceDto> getAllExperiences(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Experience> experiences = experienceRepository.findAll(pageable);
-        return experiences.map(experienceMapper::toDto);
+        List<ExperienceDto> experienceDtoList = experiences.getContent().stream()
+                .map(experienceMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(experienceDtoList, pageable, experiences.getTotalElements());
     }
 
     @Override
