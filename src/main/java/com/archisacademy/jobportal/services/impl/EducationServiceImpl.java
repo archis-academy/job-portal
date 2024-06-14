@@ -1,8 +1,8 @@
 package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.EducationDto;
-import com.archisacademy.jobportal.exceptions.JobPortalServerException;
 import com.archisacademy.jobportal.loggers.MainLogger;
+import com.archisacademy.jobportal.loggers.messages.EducationMessage;
 import com.archisacademy.jobportal.mapper.EducationMapper;
 import com.archisacademy.jobportal.model.Education;
 import com.archisacademy.jobportal.repositories.EducationRepository;
@@ -32,27 +32,28 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public String createEducation(EducationDto educationDto) {
         if (educationDto.getStartDate().after(educationDto.getGraduationDate())) {
-            throw new IllegalArgumentException("Graduation date cannot be before start date.");
+            LOGGER.log(EducationMessage.GRADUATION_DATE_BEFORE_START_DATE, HttpStatus.BAD_REQUEST);
+            return null;
         }
         Education education = educationMapper.toEntity(educationDto);
         education.setProfile(profileRepository.findById(educationDto.getProfileId())
                 .orElseThrow(() -> {
-                    LOGGER.log("Profile not found with id: " + educationDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Profile not found with id: " + educationDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    LOGGER.log(EducationMessage.PROFILE_NOT_FOUND + educationDto.getProfileId(), HttpStatus.NOT_FOUND);
+                    return null;
                 }));
         educationRepository.save(education);
-        return "Education created successfully";
+        return EducationMessage.EDUCATION_CREATED_SUCCESS;
     }
 
     @Override
     @Transactional
     public String deleteEducation(Long id) {
         if (!educationRepository.existsById(id)) {
-            LOGGER.log("Education not found with id: " + id, HttpStatus.NOT_FOUND);
-            throw new JobPortalServerException("Education not found with id: " + id, HttpStatus.NOT_FOUND);
+            LOGGER.log(EducationMessage.EDUCATION_NOT_FOUND + id, HttpStatus.NOT_FOUND);
+            return null;
         }
         educationRepository.deleteById(id);
-        return "Education deleted successfully";
+        return EducationMessage.EDUCATION_DELETED_SUCCESS;
     }
 
     @Override
@@ -60,8 +61,8 @@ public class EducationServiceImpl implements EducationService {
     public String updateEducation(long educationId, EducationDto educationDto) {
         Education existingEducation = educationRepository.findById(educationId)
                 .orElseThrow(() -> {
-                    LOGGER.log("Education not found with id: " + educationId, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Education not found with id: " + educationId, HttpStatus.NOT_FOUND);
+                    LOGGER.log(EducationMessage.EDUCATION_NOT_FOUND + educationId, HttpStatus.NOT_FOUND);
+                    return null;
                 });
 
         existingEducation.setUniversity(educationDto.getUniversity());
@@ -71,7 +72,7 @@ public class EducationServiceImpl implements EducationService {
         existingEducation.setStartDate(educationDto.getStartDate());
 
         educationRepository.save(existingEducation);
-        return "Education updated successfully";
+        return EducationMessage.EDUCATION_UPDATED_SUCCESS;
     }
 
     @Override
@@ -79,15 +80,14 @@ public class EducationServiceImpl implements EducationService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Education> educations = educationRepository.findAll(pageable);
         return educations.map(educationMapper::toDto);
-
     }
 
     @Override
     public EducationDto getEducationsById(Long id) {
         Education education = educationRepository.findById(id)
                 .orElseThrow(() -> {
-                    LOGGER.log("Education not found with id: " + id, HttpStatus.NOT_FOUND);
-                    return new JobPortalServerException("Education not found with id: " + id, HttpStatus.NOT_FOUND);
+                    LOGGER.log(EducationMessage.EDUCATION_NOT_FOUND + id, HttpStatus.NOT_FOUND);
+                    return null;
                 });
         return educationMapper.toDto(education);
     }
