@@ -1,6 +1,7 @@
 package com.archisacademy.jobportal.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,8 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+@Builder
+public class ProjectDto {
     private String projectName;
     private Timestamp startDate;
     private Timestamp endDate;
@@ -18,5 +20,6 @@ public class Project {
     private String url;
     private String technologies;
     private String description;
+    private Long profileId;
 
 }
