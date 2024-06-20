@@ -74,7 +74,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public String getAllCertificateByProfileId(long profileId) {
+    public List<CertificateDto> getAllCertificateByProfileId(long profileId) {
         profileRepository.findById(profileId)
                 .orElseThrow(() -> {
                     LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -83,7 +83,7 @@ public class CertificateServiceImpl implements CertificateService {
 
         return certificateRepository.findByProfileId(profileId).stream()
                 .map(certificateMapper::toDto)
-                .toString();
+                .collect(Collectors.toList());
     }
 
 }
