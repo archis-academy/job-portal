@@ -8,6 +8,8 @@ import com.archisacademy.jobportal.repositories.ProfileRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 
 @Component
 public class CertificateMapperImpl implements CertificateMapper {
@@ -35,7 +37,7 @@ public class CertificateMapperImpl implements CertificateMapper {
         return Certificate.builder()
                 .certificateName(certificateDto.getName())
                 .companyName(certificateDto.getCompanyName())
-                .postingDate(certificateDto.getPostingDate())
+                .postingDate(new Timestamp(System.currentTimeMillis()))
                 .certificateHours(certificateDto.getHours())
                 .certificateUrl(certificateDto.getUrl())
                 .profile(profileRepository.findById(certificateDto.getProfileId())

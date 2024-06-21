@@ -58,7 +58,6 @@ public class CertificateServiceImpl implements CertificateService {
                 });
         certificate.setCertificateName(certificateDto.getName());
         certificate.setCompanyName(certificateDto.getCompanyName());
-        certificate.setPostingDate(certificateDto.getPostingDate());
         certificate.setCertificateHours(certificateDto.getHours());
         certificate.setCertificateUrl(certificateDto.getUrl());
         certificateRepository.save(certificate);
