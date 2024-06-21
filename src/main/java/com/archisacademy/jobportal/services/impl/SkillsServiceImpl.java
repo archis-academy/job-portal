@@ -9,6 +9,7 @@ import com.archisacademy.jobportal.model.Skills;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.SkillsRepository;
 import com.archisacademy.jobportal.services.SkillsService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
+    @Transactional
     public String createSkill(SkillsDto skillsDto) {
         Skills skills = convertToSkills(skillsDto);
         skills.setProfile(profileRepository.findById(skillsDto.getProfileId())
@@ -40,12 +42,14 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
+    @Transactional
     public String deleteSkill(Long id) {
         skillsRepository.deleteById(id);
         return SkillsMessage.SKILL_DELETED + id;
     }
 
     @Override
+    @Transactional
     public String updateSkill(long skillId, SkillsDto skillsDto) {
         Skills existingSkill = skillsRepository.findById(skillId)
                 .orElseThrow(() -> {
