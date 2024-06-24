@@ -72,21 +72,21 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.deleteById(id);
 
-        LOGGER.log(String.format(CommentMessage.COMMENT_DELETED_LOG, id), HttpStatus.OK);
+        LOGGER.log(String.format(CommentMessage.COMMENT_DELETED_LOG, id));
         return CommentMessage.COMMENT_DELETED_SUCCESS;
     }
 
     @Override
     @Transactional
-    public String updateComment(Long commentId, CommentDto commentDto, String userUuid) {
+    public String updateComment(Long commentId, CommentDto commentDto) {
         Comment existingComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> {
                     LOGGER.log(CommentMessage.COMMENT_NOT_FOUND + commentId, HttpStatus.NOT_FOUND);
                     return null;
                 });
 
-        if (!existingComment.getUserUuid().equals(userUuid)) {
-            LOGGER.log(UserMessage.UNAUTHORIZED_ACTION + userUuid, HttpStatus.FORBIDDEN);
+        if (!existingComment.getUserUuid().equals(commentDto.getUserUuid())) {
+            LOGGER.log(UserMessage.UNAUTHORIZED_ACTION + commentDto.getUserUuid(), HttpStatus.FORBIDDEN);
             return null;
         }
 

@@ -22,27 +22,26 @@ public class CommentController {
         return new ResponseEntity<>(commentService.createComment(commentDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long id,
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteComment(@RequestParam Long id,
                                                 @RequestParam String userUuid) {
-         return new ResponseEntity<>(commentService.deleteComment(id, userUuid), HttpStatus.OK);
+        return new ResponseEntity<>(commentService.deleteComment(id, userUuid), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateComment(@PathVariable Long id,
-                                                @RequestBody CommentDto commentDto,
-                                                @RequestParam String userUuid) {
-         return new ResponseEntity<>(commentService.updateComment(id, commentDto, userUuid), HttpStatus.OK);
+    public ResponseEntity<String> updateComment(@RequestParam Long id,
+                                                @RequestBody CommentDto commentDto) {
+        return new ResponseEntity<>(commentService.updateComment(id, commentDto), HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public ResponseEntity<Page<CommentDto>> getAllComments(@RequestParam(defaultValue = "0") int pageNo,
                                                            @RequestParam(defaultValue = "10") int pageSize) {
-         return new ResponseEntity<>(commentService.getAllComments(pageNo, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(commentService.getAllComments(pageNo, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommentDto> getCommentById(@PathVariable Long id) {
-         return new ResponseEntity<>(commentService.getCommentById(id), HttpStatus.OK);
+        return new ResponseEntity<>(commentService.getCommentById(id), HttpStatus.OK);
     }
 }

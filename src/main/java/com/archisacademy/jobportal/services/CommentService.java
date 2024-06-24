@@ -10,7 +10,7 @@ public interface CommentService {
 
     String deleteComment(Long id, String userUuid);
 
-    String updateComment(Long commentId, CommentDto commentDto, String userUuid);
+    String updateComment(Long commentId, CommentDto commentDto);
 
     Page<CommentDto> getAllComments(int pageNo, int pageSize);
 
