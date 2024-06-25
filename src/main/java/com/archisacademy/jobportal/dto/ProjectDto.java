@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class ProjectDto {
     private String position;
     private Boolean status;
     private String url;
-    private String technologies;
+    private List<String> technologies;
     private String description;
     private Long profileId;
 
