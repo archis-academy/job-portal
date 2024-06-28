@@ -1,6 +1,6 @@
 package com.archisacademy.jobportal.model;
 
-import com.archisacademy.jobportal.enums.LocationType;
+import com.archisacademy.jobportal.converter.TechnologiesConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,7 +32,8 @@ public class Project {
     @Column(name = "url")
     private String url;
     @Column(name = "technologies")
-    private String technologies;
+    @Convert(converter = TechnologiesConverter.class)
+    private List<String> technologies;
     @Column(name = "description")
     private String description;
     @ManyToOne

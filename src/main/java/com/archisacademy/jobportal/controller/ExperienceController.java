@@ -22,13 +22,13 @@ public class ExperienceController {
         return new ResponseEntity<>(experienceService.createExperience(experienceDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteExperience(@PathVariable Long id) {
         experienceService.deleteExperience(id);
         return new ResponseEntity<>(experienceService.deleteExperience(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateExperience(@PathVariable Long id, @RequestBody ExperienceDto experienceDto) {
         return new ResponseEntity<>(experienceService.updateExperience(id, experienceDto), HttpStatus.OK);
     }
