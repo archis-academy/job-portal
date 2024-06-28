@@ -36,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
         this.commentMapper = commentMapper;
     }
 
+    //todo: this method is completely wrong please do update it according to the database design we have something called userpostcommentmapper you should create that one as wekk
     @Override
     @Transactional
     public String createComment(CommentDto commentDto) {

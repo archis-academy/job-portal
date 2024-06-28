@@ -28,7 +28,7 @@ public class CommentController {
         return new ResponseEntity<>(commentService.deleteComment(id, userUuid), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}") //todo: this is wrong when you use {} then you should use @PathVariable not @RequestParam
     public ResponseEntity<String> updateComment(@RequestParam Long id,
                                                 @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.updateComment(id, commentDto), HttpStatus.OK);

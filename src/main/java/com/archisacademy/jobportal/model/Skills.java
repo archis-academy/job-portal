@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class Skills {
+@AllArgsConstructor // todo: where is the table annotation
+public class Skills { //todo: why is this class name is plural? it should be single like other classes that you have created in the model package please update it ASAP
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
