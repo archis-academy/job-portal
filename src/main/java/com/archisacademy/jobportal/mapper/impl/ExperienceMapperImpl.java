@@ -32,7 +32,7 @@ public class ExperienceMapperImpl implements ExperienceMapper {
         return Experience.builder()
                 .companyName(experienceDto.getCompanyName())
                 .isActive(experienceDto.isActive())
-                .startDate(experienceDto.getStartDate())
+                .startDate(experienceDto.getStartDate()) // todo: the start date should be coming MM/DD/YY format then convert it to timestamp format and set it. make sure to add converting methods inside the common utils
                 .endDate(experienceDto.getEndDate())
                 .location(experienceDto.getLocation())
                 .locationType(stringToLocationType(experienceDto.getLocationType()))

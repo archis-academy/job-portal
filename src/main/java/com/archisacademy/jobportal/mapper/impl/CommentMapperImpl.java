@@ -6,6 +6,8 @@ import com.archisacademy.jobportal.model.Comment;
 import com.archisacademy.jobportal.model.Post;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 @Component
 public class CommentMapperImpl implements CommentMapper {
     @Override
@@ -17,8 +19,8 @@ public class CommentMapperImpl implements CommentMapper {
         return CommentDto.builder()
                 .description(comment.getDescription())
                 .userUuid(comment.getUserUuid())
-                .createdDate(comment.getCreatedDate())
-                .updateDate(comment.getUpdateDate())
+                .createdDate(comment.getCreatedDate()) // todo:same for this one as well
+                .updateDate(comment.getUpdateDate()) // todo:same for this one as well
                 .postId(comment.getPost() != null ? comment.getPost().getId() : null)
                 .build();
     }
@@ -32,8 +34,8 @@ public class CommentMapperImpl implements CommentMapper {
         Comment comment = Comment.builder()
                 .description(commentDto.getDescription())
                 .userUuid(commentDto.getUserUuid())
-                .createdDate(commentDto.getCreatedDate())
-                .updateDate(commentDto.getUpdateDate())
+                .createdDate(commentDto.getCreatedDate()) // todo:use new Timestamp(System.currentTimeMillis());
+                .updateDate(commentDto.getUpdateDate()) // todo:same for this one as well
                 .build();
 
         if (commentDto.getPostId() != null) {

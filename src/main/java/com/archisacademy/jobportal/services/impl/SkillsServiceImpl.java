@@ -36,7 +36,8 @@ public class SkillsServiceImpl implements SkillsService {
                     return null;
                 }));
         skillsRepository.save(skills);
-        return SkillsMessage.SKILL_CREATED + skills.getId();
+        //todo: first of you need to save the skill and get the saved skill and store it inside a new object in that you will be able to get the id since id is being generate by database
+        return SkillsMessage.SKILL_CREATED + skills.getId(); // the id is zero all the time of it is a primitive type if it is wrapper class then it is null;
     }
 
     @Override
