@@ -22,14 +22,14 @@ public class CommentController {
         return new ResponseEntity<>(commentService.createComment(commentDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteComment(@RequestParam Long id,
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteComment(@PathVariable  Long id,
                                                 @RequestParam String userUuid) {
         return new ResponseEntity<>(commentService.deleteComment(id, userUuid), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateComment(@RequestParam Long id,
+    public ResponseEntity<String> updateComment(@PathVariable Long id,
                                                 @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.updateComment(id, commentDto), HttpStatus.OK);
     }

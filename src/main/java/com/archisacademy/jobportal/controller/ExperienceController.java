@@ -17,7 +17,7 @@ public class ExperienceController {
         this.experienceService = experienceService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<String> createExperience(@RequestBody ExperienceDto experienceDto) {
         return new ResponseEntity<>(experienceService.createExperience(experienceDto), HttpStatus.CREATED);
     }

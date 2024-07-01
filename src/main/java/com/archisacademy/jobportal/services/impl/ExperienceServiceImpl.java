@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,8 +78,8 @@ public class ExperienceServiceImpl implements ExperienceService {
 
         existingExperience.setCompanyName(experienceDto.getCompanyName());
         existingExperience.setActive(experienceDto.isActive());
-        existingExperience.setStartDate(experienceDto.getStartDate());
-        existingExperience.setEndDate(experienceDto.getEndDate());
+        existingExperience.setStartDate(new Timestamp(System.currentTimeMillis()));
+        existingExperience.setEndDate(new Timestamp(System.currentTimeMillis()));
         existingExperience.setLocation(experienceDto.getLocation());
         existingExperience.setLocationType(experienceMapper.stringToLocationType(experienceDto.getLocationType()));
         existingExperience.setPosition(experienceDto.getPosition());
