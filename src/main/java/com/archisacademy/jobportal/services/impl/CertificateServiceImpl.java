@@ -7,6 +7,7 @@ import com.archisacademy.jobportal.loggers.messages.CertificateMessage;
 import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
 import com.archisacademy.jobportal.mapper.CertificateMapper;
 import com.archisacademy.jobportal.model.Certificate;
+import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.CertificateRepository;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.CertificateService;
@@ -34,28 +35,20 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     public String createCertificate(CertificateDto certificateDto) {
         Certificate certificate = certificateMapper.toEntity(certificateDto);
+        certificate.setProfile(findProfileById(certificateDto.getProfileId()));
         certificateRepository.save(certificate);
         return CertificateMessage.CERTIFICATE_CREATED + certificate.getId();
     }
 
     @Override
     public CertificateDto getCertificateById(long id) {
-        return certificateRepository.findById(id)
-                .map(certificateMapper::toDto)
-                .orElseThrow(() -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND);
-                    return null;
-                });
+        return certificateMapper.toDto(findCertificateById(id));
     }
 
     @Override
     @Transactional
     public String updateCertificate(long id, CertificateDto certificateDto) {
-        Certificate certificate = certificateRepository.findById(id)
-                .orElseThrow(() -> {
-                    LOGGER.log(CertificateMessage.CERTIFICATE_NOT_FOUND + id, HttpStatus.NOT_FOUND);
-                    return null;
-                });
+        Certificate certificate = findCertificateById(id);
         certificate.setCertificateName(certificateDto.getName());
         certificate.setCompanyName(certificateDto.getCompanyName());
         certificate.setCertificateHours(certificateDto.getHours());
@@ -74,15 +67,27 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<CertificateDto> getAllCertificateByProfileId(long profileId) {
-        profileRepository.findById(profileId)
-                .orElseThrow(() -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND);
-                    return null;
-                });
+        findProfileById(profileId);
 
         return certificateRepository.findByProfileId(profileId).stream()
                 .map(certificateMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    private Certificate findCertificateById(long id) {
+        return certificateRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.log(CertificateMessage.CERTIFICATE_NOT_FOUND + id, HttpStatus.NOT_FOUND);
+                    return null;
+                });
+    }
+
+    private Profile findProfileById(long profileId) {
+        return profileRepository.findById(profileId)
+                .orElseThrow(() -> {
+                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + profileId, HttpStatus.NOT_FOUND);
+                    return null;
+                });
     }
 
 }

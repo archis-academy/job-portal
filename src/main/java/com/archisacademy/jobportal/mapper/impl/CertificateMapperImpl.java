@@ -13,12 +13,8 @@ import java.sql.Timestamp;
 
 @Component
 public class CertificateMapperImpl implements CertificateMapper {
-    private final ProfileRepository profileRepository;
     private final static MainLogger LOGGER = new MainLogger(CertificateMapperImpl.class);
 
-    public CertificateMapperImpl(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
 
     @Override
     public CertificateDto toDto(Certificate certificate) {
@@ -40,11 +36,6 @@ public class CertificateMapperImpl implements CertificateMapper {
                 .postingDate(new Timestamp(System.currentTimeMillis()))
                 .certificateHours(certificateDto.getHours())
                 .certificateUrl(certificateDto.getUrl())
-                .profile(profileRepository.findById(certificateDto.getProfileId())
-                        .orElseThrow(() -> {
-                            LOGGER.log("Profile not found", HttpStatus.NOT_FOUND);
-                            return null;
-                        }))
                 .build();
     }
 }
