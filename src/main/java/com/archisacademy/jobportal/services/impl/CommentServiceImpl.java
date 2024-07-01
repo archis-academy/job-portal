@@ -6,8 +6,12 @@ import com.archisacademy.jobportal.loggers.messages.CommentMessage;
 import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.mapper.CommentMapper;
 import com.archisacademy.jobportal.model.Comment;
+import com.archisacademy.jobportal.model.Post;
+import com.archisacademy.jobportal.model.User;
+import com.archisacademy.jobportal.model.UserPostCommentMapper;
 import com.archisacademy.jobportal.repositories.CommentRepository;
 import com.archisacademy.jobportal.repositories.PostRepository;
+import com.archisacademy.jobportal.repositories.UserPostCommentMapperRepository;
 import com.archisacademy.jobportal.repositories.UserRepository;
 import com.archisacademy.jobportal.services.CommentService;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +31,15 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserPostCommentMapperRepository userPostCommentMapperRepository;
     private final CommentMapper commentMapper;
     private final static MainLogger LOGGER = new MainLogger(CommentServiceImpl.class);
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository, CommentMapper commentMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository, UserPostCommentMapperRepository userPostCommentMapperRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.userPostCommentMapperRepository = userPostCommentMapperRepository;
         this.commentMapper = commentMapper;
     }
 
@@ -40,19 +47,32 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public String createComment(CommentDto commentDto) {
 
-        userRepository.findByUuid(commentDto.getUserUuid())
+        User user = userRepository.findByUuid(commentDto.getUserUuid())
                 .orElseThrow(() -> {
                     LOGGER.log(UserMessage.USER_NOT_FOUND + commentDto.getUserUuid(), HttpStatus.NOT_FOUND);
                     return null;
                 });
 
-        Comment comment = commentMapper.toEntity(commentDto);
-        comment.setPost(postRepository.findById(commentDto.getPostId())
+        Post post = postRepository.findById(commentDto.getPostId())
                 .orElseThrow(() -> {
                     LOGGER.log(CommentMessage.POST_NOT_FOUND + commentDto.getPostId(), HttpStatus.NOT_FOUND);
                     return null;
-                }));
+                });
+
+        Comment comment = commentMapper.toEntity(commentDto);
+        comment.setUserUuid(user.getUuid());
+        comment.setPost(post);
+
         commentRepository.save(comment);
+
+        UserPostCommentMapper userPostCommentMapper = userPostCommentMapperRepository.findByUserAndPost(user, post);
+        if (userPostCommentMapper == null) {
+            userPostCommentMapper = UserPostCommentMapper.builder()
+                    .user(user)
+                    .post(post)
+                    .build();
+            userPostCommentMapperRepository.save(userPostCommentMapper);
+        }
         return CommentMessage.COMMENT_CREATED_SUCCESS;
     }
 
@@ -92,8 +112,8 @@ public class CommentServiceImpl implements CommentService {
 
         existingComment.setDescription(commentDto.getDescription());
         existingComment.setUserUuid(commentDto.getUserUuid());
-        existingComment.setCreatedDate(commentDto.getCreatedDate());
-        existingComment.setUpdateDate(commentDto.getUpdateDate());
+        existingComment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        existingComment.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
         commentRepository.save(existingComment);
         return CommentMessage.COMMENT_UPDATED_SUCCESS;
