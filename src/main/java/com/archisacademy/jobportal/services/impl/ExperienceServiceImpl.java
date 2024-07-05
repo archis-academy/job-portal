@@ -78,8 +78,8 @@ public class ExperienceServiceImpl implements ExperienceService {
 
         existingExperience.setCompanyName(experienceDto.getCompanyName());
         existingExperience.setActive(experienceDto.isActive());
-        existingExperience.setStartDate(new Timestamp(System.currentTimeMillis()));
-        existingExperience.setEndDate(new Timestamp(System.currentTimeMillis()));
+        existingExperience.setStartDate(new Timestamp(System.currentTimeMillis())); // todo: the date should be coming from the dto you can't know the exact date for the start date
+        existingExperience.setEndDate(new Timestamp(System.currentTimeMillis())); //todo: same as above
         existingExperience.setLocation(experienceDto.getLocation());
         existingExperience.setLocationType(experienceMapper.stringToLocationType(experienceDto.getLocationType()));
         existingExperience.setPosition(experienceDto.getPosition());

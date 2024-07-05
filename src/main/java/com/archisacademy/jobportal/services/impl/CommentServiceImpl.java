@@ -63,6 +63,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserUuid(user.getUuid());
         comment.setPost(post);
 
+        //todo: please do changes according to the recordings
         commentRepository.save(comment);
 
         UserPostCommentMapper userPostCommentMapper = userPostCommentMapperRepository.findByUserAndPost(user, post);
@@ -111,8 +112,8 @@ public class CommentServiceImpl implements CommentService {
         }
 
         existingComment.setDescription(commentDto.getDescription());
-        existingComment.setUserUuid(commentDto.getUserUuid());
-        existingComment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        existingComment.setUserUuid(commentDto.getUserUuid()); //todo: no need to set user uuid in this method since the user uuid is aready set in the existing comment
+        existingComment.setCreatedDate(new Timestamp(System.currentTimeMillis())); //todo: you should not update the created date since it is the date when the comment was created
         existingComment.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
         commentRepository.save(existingComment);
