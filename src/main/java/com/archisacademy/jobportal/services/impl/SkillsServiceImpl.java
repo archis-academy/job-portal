@@ -46,7 +46,7 @@ public class SkillsServiceImpl implements SkillsService {
 
     @Override
     @Transactional
-    public String deleteSkill(Long id) {
+    public String deleteSkill(Long id) { //todo: the method name should be deleteSkillById
         skillsRepository.deleteById(id);
         return SkillsMessage.SKILL_DELETED + id;
     }
@@ -62,7 +62,7 @@ public class SkillsServiceImpl implements SkillsService {
 
         existingSkill.setName(skillsDto.getName());
         existingSkill.setDescription(skillsDto.getDescription());
-        existingSkill.setProfile(profileRepository.findById(skillsDto.getProfileId())
+        existingSkill.setProfile(profileRepository.findById(skillsDto.getProfileId()) //todo: no need to get profile and set it again
                 .orElseThrow(() -> {
                     LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillsDto.getProfileId(), HttpStatus.NOT_FOUND);
                     return null;

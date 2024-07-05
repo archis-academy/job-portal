@@ -82,7 +82,7 @@ public class CertificateServiceImpl implements CertificateService {
                 });
     }
 
-    private Profile findProfileById(long profileId) {
+    private Profile findProfileById(long profileId) { //todo: write a mapper for profile and move this method to mapper class
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> {
                     LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + profileId, HttpStatus.NOT_FOUND);

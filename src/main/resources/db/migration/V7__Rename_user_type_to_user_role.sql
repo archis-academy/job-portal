@@ -5,3 +5,5 @@ ALTER TABLE posts RENAME COLUMN user_uuids TO liked_users;
 
 ALTER TABLE educations ADD COLUMN start_date TIMESTAMP;
 ALTER TABLE comments ADD COLUMN update_date TIMESTAMP;
+
+<--- Please update the file name it should not be capital --->

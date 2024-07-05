@@ -48,7 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public String deleteProject(Long id) {
-        Project project = projectRepository.findById(id)
+        Project project = projectRepository.findById(id) // no need to check if project exists, if it doesn't, it will throw an exception
                 .orElseThrow(() -> {
                     LOGGER.log(ProjectMessage.PROJECT_NOT_FOUND + id, HttpStatus.NOT_FOUND);
                     return null;
