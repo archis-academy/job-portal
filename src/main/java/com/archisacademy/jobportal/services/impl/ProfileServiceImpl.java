@@ -8,10 +8,12 @@ import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
