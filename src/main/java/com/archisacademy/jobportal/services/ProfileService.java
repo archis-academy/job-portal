@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProfileService {
     String createProfile(ProfileDto profile);
     String deleteProfile(Long id);
-    String updateProfile(long profileId, ProfileDto profile);
+    String updateProfile(ProfileDto profile);
     List<ProfileDto> getAllProfiles();
     ProfileDto getProfileById(Long id);
     List<ProfileDto> searchProfiles(String keyword);

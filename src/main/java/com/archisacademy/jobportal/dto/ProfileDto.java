@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class ProfileDto {
+    private Long id;
     private String sector;
     private Timestamp birthDate;
     private String summary;
