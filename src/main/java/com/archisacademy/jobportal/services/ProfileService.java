@@ -10,5 +10,4 @@ public interface ProfileService {
     String updateProfile(ProfileDto profile);
     List<ProfileDto> getAllProfiles();
     ProfileDto getProfileById(Long id);
-    List<ProfileDto> searchProfiles(String keyword);
 }

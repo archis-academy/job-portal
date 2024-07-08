@@ -70,12 +70,4 @@ public class ProfileServiceImpl implements ProfileService {
         );
         return profileMapper.toDto(profile);
     }
-
-    @Override
-    public List<ProfileDto> searchProfiles(String keyword) {
-        return profileRepository.findByNameContainingIgnoreCase(keyword)
-                .stream()
-                .map(profileMapper::toDto)
-                .collect(Collectors.toList());
-    }
 }

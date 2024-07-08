@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/profiles")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -43,8 +44,5 @@ public class ProfileController {
         return new ResponseEntity<>(profileService.getProfileById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<ProfileDto>> searchProfiles(@RequestParam String keyword) {
-        return new ResponseEntity<>(profileService.searchProfiles(keyword), HttpStatus.OK);
-    }
+
 }
