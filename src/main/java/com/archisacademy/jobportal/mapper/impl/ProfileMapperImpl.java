@@ -3,7 +3,9 @@ package com.archisacademy.jobportal.mapper.impl;
 import com.archisacademy.jobportal.dto.ProfileDto;
 import com.archisacademy.jobportal.mapper.ProfileMapper;
 import com.archisacademy.jobportal.model.Profile;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfileMapperImpl implements ProfileMapper {
     @Override
     public ProfileDto toDto(Profile profile) {

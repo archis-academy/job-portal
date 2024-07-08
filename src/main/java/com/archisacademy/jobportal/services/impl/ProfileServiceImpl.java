@@ -2,6 +2,7 @@ package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.ProfileDto;
 import com.archisacademy.jobportal.loggers.MainLogger;
+import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
 import com.archisacademy.jobportal.mapper.ProfileMapper;
 import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
@@ -24,16 +25,15 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public String createProfile(ProfileDto profile) {
-        Profile profileEntity = profileMapper.toEntity(profile);
-        profileRepository.save(profileEntity);
-        return "Profile created successfully";
+        Profile profileEntity = profileRepository.save(profileMapper.toEntity(profile));
+        return ProfilesMessage.PROFILE_CREATED + profileEntity.getId();
     }
 
     @Override
     @Transactional
     public String deleteProfile(Long id) {
         profileRepository.deleteById(id);
-        return "Profile deleted successfully";
+        return ProfilesMessage.PROFILE_DELETED + id;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile existingProfile = profileRepository.findById(profile.getId())
                 .orElseThrow(
                         () -> {
-                            LOGGER.log("Profile not found", null);
+                            LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + profile.getId(), null);
                             return null;
                         }
                 );
@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
         existingProfile.setBirthDate(profile.getBirthDate());
         existingProfile.setSummary(profile.getSummary());
         profileRepository.save(existingProfile);
-        return "Profile updated successfully";
+        return ProfilesMessage.PROFILE_UPDATED + profile.getId();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileDto getProfileById(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> {
-                    LOGGER.log("Profile not found", null);
+                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + id, null);
                     return null;
                 }
         );
