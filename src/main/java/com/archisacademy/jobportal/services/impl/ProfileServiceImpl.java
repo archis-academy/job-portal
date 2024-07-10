@@ -8,6 +8,7 @@ import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public String createProfile(ProfileDto profile) {
-        Profile profileEntity = profileRepository.save(profileMapper.toEntity(profile));
+    public String createProfile(ProfileDto profileDto) {
+        Profile profileEntity = profileRepository.save(profileMapper.toEntity(profileDto));
         return ProfilesMessage.PROFILE_CREATED + profileEntity.getId();
     }
 
@@ -64,7 +65,7 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileDto getProfileById(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + id, null);
+                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + id, HttpStatus.NOT_FOUND);
                     return null;
                 }
         );

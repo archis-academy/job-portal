@@ -5,6 +5,8 @@ import com.archisacademy.jobportal.mapper.ProfileMapper;
 import com.archisacademy.jobportal.model.Profile;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 @Component
 public class ProfileMapperImpl implements ProfileMapper {
     @Override
@@ -20,7 +22,7 @@ public class ProfileMapperImpl implements ProfileMapper {
     public Profile toEntity(ProfileDto profileDto) {
         return Profile.builder()
                 .sector(profileDto.getSector())
-                .birthDate(profileDto.getBirthDate())
+                .birthDate(new Timestamp(System.currentTimeMillis()))
                 .summary(profileDto.getSummary())
                 .build();
     }

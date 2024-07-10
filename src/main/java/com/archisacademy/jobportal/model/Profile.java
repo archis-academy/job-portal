@@ -36,5 +36,8 @@ public class Profile {
     private List<Education> educations;
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
