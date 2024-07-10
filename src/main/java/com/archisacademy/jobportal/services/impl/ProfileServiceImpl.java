@@ -3,9 +3,11 @@ package com.archisacademy.jobportal.services.impl;
 import com.archisacademy.jobportal.dto.ProfileDto;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
+import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.mapper.ProfileMapper;
 import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
+import com.archisacademy.jobportal.repositories.UserRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -18,17 +20,26 @@ import java.util.stream.Collectors;
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final UserRepository userRepository;
     private final static MainLogger LOGGER = new MainLogger(ProfileServiceImpl.class);
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, UserRepository userRepository) {
         this.profileRepository = profileRepository;
         this.profileMapper = profileMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
     public String createProfile(ProfileDto profileDto) {
         Profile profileEntity = profileRepository.save(profileMapper.toEntity(profileDto));
+        profileEntity.setUser(userRepository.findById(profileDto.getUserId()).orElseThrow(
+                () -> {
+                    LOGGER.log(UserMessage.USER_NOT_FOUND + profileDto.getUserId(), HttpStatus.NOT_FOUND);
+                    return null;
+                }
+        )
+        );
         return ProfilesMessage.PROFILE_CREATED + profileEntity.getId();
     }
 

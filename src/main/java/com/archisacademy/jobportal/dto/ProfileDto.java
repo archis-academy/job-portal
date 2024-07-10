@@ -16,5 +16,6 @@ public class ProfileDto {
     private String sector;
     private Timestamp birthDate;
     private String summary;
+    private Long userId;
 
 }
