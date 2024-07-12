@@ -21,6 +21,6 @@ public class ExperienceDto {
     private String locationType;
     private String position;
     private String description;
-    private List<SkillsDto> usedSkills;
+    private List<SkillDto> usedSkills;
     private Long profileId;
 }

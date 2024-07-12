@@ -111,8 +111,6 @@ public class CommentServiceImpl implements CommentService {
         }
 
         existingComment.setDescription(commentDto.getDescription());
-        existingComment.setUserUuid(commentDto.getUserUuid());
-        existingComment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         existingComment.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
         commentRepository.save(existingComment);
