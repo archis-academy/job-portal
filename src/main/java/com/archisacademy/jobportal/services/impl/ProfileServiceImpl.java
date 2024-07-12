@@ -32,7 +32,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional
     public String createProfile(ProfileDto profileDto) {
-        Profile profileEntity = profileRepository.save(profileMapper.toEntity(profileDto));
+        Profile profileEntity = profileMapper.toEntity(profileDto);
         profileEntity.setUser(userRepository.findById(profileDto.getUserId()).orElseThrow(
                 () -> {
                     LOGGER.log(UserMessage.USER_NOT_FOUND + profileDto.getUserId(), HttpStatus.NOT_FOUND);
@@ -40,7 +40,10 @@ public class ProfileServiceImpl implements ProfileService {
                 }
         )
         );
-        return ProfilesMessage.PROFILE_CREATED + profileEntity.getId();
+
+        Profile savedProfile = profileRepository.save(profileEntity);
+
+        return ProfilesMessage.PROFILE_CREATED + savedProfile.getId();
     }
 
     @Override
@@ -83,7 +86,8 @@ public class ProfileServiceImpl implements ProfileService {
         return profileMapper.toDto(profile);
     }
 
-    protected Profile getProfileEntityById(Long id) {
+    @Override
+    public Profile getProfileEntityById(Long id) {
         return profileRepository.findById(id).orElseThrow(
                 () -> {
                     LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + id, HttpStatus.NOT_FOUND);

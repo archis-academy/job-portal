@@ -20,17 +20,17 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createProfile(ProfileDto profileDto) {
+    public ResponseEntity<String> createProfile(@RequestBody ProfileDto profileDto) {
         return new ResponseEntity<>(profileService.createProfile(profileDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProfile(Long id) {
+    public ResponseEntity<String> deleteProfile(@PathVariable Long id) {
         return new ResponseEntity<>(profileService.deleteProfile(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProfile(ProfileDto profileDto) {
+    public ResponseEntity<String> updateProfile(@RequestBody ProfileDto profileDto) {
         return new ResponseEntity<>(profileService.updateProfile(profileDto), HttpStatus.OK);
     }
 
@@ -40,7 +40,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDto> getProfileById(Long id) {
+    public ResponseEntity<ProfileDto> getProfileById(@PathVariable Long id) {
         return new ResponseEntity<>(profileService.getProfileById(id), HttpStatus.OK);
     }
 
