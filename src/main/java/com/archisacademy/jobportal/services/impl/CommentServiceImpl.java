@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserUuid(user.getUuid());
         comment.setPost(post);
 
-        commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
 
         UserPostCommentMapper userPostCommentMapper = userPostCommentMapperRepository.findByUserAndPost(user, post);
         if (userPostCommentMapper == null) {
@@ -71,8 +71,11 @@ public class CommentServiceImpl implements CommentService {
                     .user(user)
                     .post(post)
                     .build();
-            userPostCommentMapperRepository.save(userPostCommentMapper);
+            UserPostCommentMapper mapper = userPostCommentMapperRepository.save(userPostCommentMapper);
+            savedComment.setUserPostCommentMapper(mapper);
         }
+        savedComment.setUserPostCommentMapper(userPostCommentMapper);
+        commentRepository.save(savedComment);
         return CommentMessage.COMMENT_CREATED_SUCCESS;
     }
 
