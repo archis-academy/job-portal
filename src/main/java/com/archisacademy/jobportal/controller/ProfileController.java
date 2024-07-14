@@ -29,7 +29,7 @@ public class ProfileController {
         return new ResponseEntity<>(profileService.deleteProfile(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<String> updateProfile(@RequestBody ProfileDto profileDto) {
         return new ResponseEntity<>(profileService.updateProfile(profileDto), HttpStatus.OK);
     }

@@ -13,15 +13,18 @@ public class ProfileMapperImpl implements ProfileMapper {
     @Override
     public ProfileDto toDto(Profile profile) {
         return ProfileDto.builder()
+                .id(profile.getId())
                 .sector(profile.getSector())
                 .birthDate(profile.getBirthDate())
                 .summary(profile.getSummary())
+                .userId(profile.getUser().getId())
                 .build();
     }
 
     @Override
     public Profile toEntity(ProfileDto profileDto) {
         return Profile.builder()
+                .id(profileDto.getId())
                 .sector(profileDto.getSector())
                 .birthDate(new Timestamp(System.currentTimeMillis()))
                 .summary(profileDto.getSummary())
