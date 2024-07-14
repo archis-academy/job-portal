@@ -10,8 +10,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.System.currentTimeMillis;
-
 @Component
 public class ExperienceMapperImpl implements ExperienceMapper {
 
@@ -22,13 +20,11 @@ public class ExperienceMapperImpl implements ExperienceMapper {
             return null;
         }
 
-        Timestamp currentTimestamp = new Timestamp(currentTimeMillis());
-
         return ExperienceDto.builder()
                 .companyName(experience.getCompanyName())
                 .isActive(experience.isActive())
-                .startDate(experience.getStartDate() != null ? new Timestamp(experience.getStartDate().getTime()) : currentTimestamp)
-                .endDate(experience.getEndDate() != null ? new Timestamp(experience.getStartDate().getTime()) : currentTimestamp)
+                .startDate(new Timestamp(System.currentTimeMillis()))
+                .endDate(new Timestamp(System.currentTimeMillis()))
                 .location(experience.getLocation())
                 .locationType(locationTypeToString(experience.getLocationType()))
                 .position(experience.getPosition())
@@ -44,13 +40,11 @@ public class ExperienceMapperImpl implements ExperienceMapper {
             return null;
         }
 
-        Timestamp currentTimestamp = new Timestamp(currentTimeMillis());
-
         return Experience.builder()
                 .companyName(experienceDto.getCompanyName())
                 .isActive(experienceDto.isActive())
-                .startDate(experienceDto.getStartDate() != null ? new Timestamp(experienceDto.getStartDate().getTime()) : currentTimestamp)
-                .endDate(experienceDto.getEndDate() != null ? new Timestamp(experienceDto.getEndDate().getTime()) : currentTimestamp)
+                .startDate(new Timestamp(System.currentTimeMillis()))
+                .endDate(new Timestamp(System.currentTimeMillis()))
                 .location(experienceDto.getLocation())
                 .locationType(stringToLocationType(experienceDto.getLocationType()))
                 .position(experienceDto.getPosition())

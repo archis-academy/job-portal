@@ -1,9 +1,9 @@
 package com.archisacademy.jobportal.mapper;
 
-import com.archisacademy.jobportal.dto.SkillsDto;
-import com.archisacademy.jobportal.model.Skills;
+import com.archisacademy.jobportal.dto.SkillDto;
+import com.archisacademy.jobportal.model.Skill;
 
 public interface SkillsMapper {
-    SkillsDto toDto(Skills skill);
-    Skills toEntity(SkillsDto skillsDto);
+    SkillDto toDto(Skill skill);
+    Skill toEntity(SkillDto skillDto);
 }
