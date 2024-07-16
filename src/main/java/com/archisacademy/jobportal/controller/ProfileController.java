@@ -19,11 +19,6 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> createProfile(@RequestBody ProfileDto profileDto) {
-        return new ResponseEntity<>(profileService.createProfile(profileDto), HttpStatus.CREATED);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProfile(@PathVariable Long id) {
         return new ResponseEntity<>(profileService.deleteProfile(id), HttpStatus.OK);

@@ -4,7 +4,7 @@ import com.archisacademy.jobportal.dto.ProfileDto;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
 import com.archisacademy.jobportal.loggers.messages.UserMessage;
-import com.archisacademy.jobportal.mapper.ProfileMapper;
+import com.archisacademy.jobportal.mapper.*;
 import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.UserRepository;
@@ -20,12 +20,22 @@ import java.util.stream.Collectors;
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final EducationMapper educationMapper;
+    private final ExperienceMapper experienceMapper;
+    private final CertificateMapper certificateMapper;
+    private final SkillsMapper skillsMapper;
+    private final ProjectMapper projectMapper;
     private final UserRepository userRepository;
     private final static MainLogger LOGGER = new MainLogger(ProfileServiceImpl.class);
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, UserRepository userRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, EducationMapper educationMapper, ExperienceMapper experienceMapper, CertificateMapper certificateMapper, SkillsMapper skillsMapper, ProjectMapper projectMapper, UserRepository userRepository) {
         this.profileRepository = profileRepository;
         this.profileMapper = profileMapper;
+        this.educationMapper = educationMapper;
+        this.experienceMapper = experienceMapper;
+        this.certificateMapper = certificateMapper;
+        this.skillsMapper = skillsMapper;
+        this.projectMapper = projectMapper;
         this.userRepository = userRepository;
     }
 
@@ -83,7 +93,13 @@ public class ProfileServiceImpl implements ProfileService {
                     return null;
                 }
         );
-        return profileMapper.toDto(profile);
+        ProfileDto profileDto = profileMapper.toDto(profile);
+        profileDto.setEducations(educationMapper.toEducationDtos(profile.getEducations()));
+        profileDto.setCertificates(certificateMapper.toCertificateDtos(profile.getCertificates()));
+        profileDto.setExperiences(experienceMapper.toDtoList(profile.getExperiences()));
+        profileDto.setSkills(skillsMapper.toSkillsDtos(profile.getSkillsList()));
+        profileDto.setProjects(projectMapper.toProjectDtos(profile.getProjects()));
+        return profileDto;
     }
 
     @Override

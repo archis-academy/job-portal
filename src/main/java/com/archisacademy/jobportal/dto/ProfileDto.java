@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +18,10 @@ public class ProfileDto {
     private Timestamp birthDate;
     private String summary;
     private Long userId;
+    private List<CertificateDto> certificates;
+    private List<SkillsDto> skills;
+    private List<ExperienceDto> experiences;
+    private List<EducationDto> educations;
+    private List<ProjectDto> projects;
 
 }
