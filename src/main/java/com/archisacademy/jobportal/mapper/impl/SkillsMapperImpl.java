@@ -1,8 +1,8 @@
 package com.archisacademy.jobportal.mapper.impl;
 
-import com.archisacademy.jobportal.dto.SkillsDto;
+import com.archisacademy.jobportal.dto.SkillDto;
 import com.archisacademy.jobportal.mapper.SkillsMapper;
-import com.archisacademy.jobportal.model.Skills;
+import com.archisacademy.jobportal.model.Skill;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,8 +10,8 @@ import java.util.List;
 @Component
 public class SkillsMapperImpl implements SkillsMapper {
     @Override
-    public SkillsDto toDto(Skills skill) {
-        return SkillsDto.builder()
+    public SkillDto toDto(Skill skill) {
+        return SkillDto.builder()
                 .name(skill.getName())
                 .description(skill.getDescription())
                 .profileId(skill.getProfile().getId())
@@ -19,10 +19,10 @@ public class SkillsMapperImpl implements SkillsMapper {
     }
 
     @Override
-    public Skills toEntity(SkillsDto skillsDto) {
-        return Skills.builder()
-                .name(skillsDto.getName())
-                .description(skillsDto.getDescription())
+    public Skill toEntity(SkillDto skillDto) {
+        return Skill.builder()
+                .name(skillDto.getName())
+                .description(skillDto.getDescription())
                 .build();
     }
 

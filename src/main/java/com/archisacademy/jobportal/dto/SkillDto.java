@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SkillsDto {
+public class SkillDto {
     private String name;
     private String description;
     private Long profileId;

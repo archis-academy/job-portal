@@ -15,13 +15,12 @@ public class CommentMapperImpl implements CommentMapper {
         if (comment == null) {
             return null;
         }
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
         return CommentDto.builder()
                 .description(comment.getDescription())
                 .userUuid(comment.getUserUuid())
-                .createdDate(comment.getCreatedDate() != null ? comment.getCreatedDate() :currentTimestamp)
-                .updateDate(comment.getUpdateDate() != null ? comment.getUpdateDate() : currentTimestamp)
+                .createdDate(new Timestamp(System.currentTimeMillis()))
+                .updateDate(new Timestamp(System.currentTimeMillis()))
                 .postId(comment.getPost() != null ? comment.getPost().getId() : null)
                 .build();
     }
@@ -32,13 +31,11 @@ public class CommentMapperImpl implements CommentMapper {
             return null;
         }
 
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-
         Comment comment = Comment.builder()
                 .description(commentDto.getDescription())
                 .userUuid(commentDto.getUserUuid())
-                .createdDate(commentDto.getCreatedDate() != null ? commentDto.getCreatedDate() : currentTimestamp)
-                .updateDate(commentDto.getUpdateDate() != null ? commentDto.getUpdateDate() : currentTimestamp)
+                .createdDate(new Timestamp(System.currentTimeMillis()))
+                .updateDate(new Timestamp(System.currentTimeMillis()))
                 .build();
 
         if (commentDto.getPostId() != null) {
