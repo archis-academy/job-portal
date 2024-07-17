@@ -8,6 +8,7 @@ import com.archisacademy.jobportal.model.Education;
 import com.archisacademy.jobportal.repositories.EducationRepository;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.EducationService;
+import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 @Service
 public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final EducationMapper educationMapper;
     private final static MainLogger LOGGER = new MainLogger(EducationServiceImpl.class);
 
-    public EducationServiceImpl(EducationRepository educationRepository, ProfileRepository profileRepository, EducationMapper educationMapper) {
+    public EducationServiceImpl(EducationRepository educationRepository, ProfileService profileService, EducationMapper educationMapper) {
         this.educationRepository = educationRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.educationMapper = educationMapper;
     }
 
@@ -40,11 +41,7 @@ public class EducationServiceImpl implements EducationService {
             return null;
         }
         Education education = educationMapper.toEntity(educationDto);
-        education.setProfile(profileRepository.findById(educationDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log(EducationMessage.PROFILE_NOT_FOUND + educationDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
+        education.setProfile(profileService.getProfileEntityById(educationDto.getProfileId()));
         educationRepository.save(education);
         return EducationMessage.EDUCATION_CREATED_SUCCESS;
     }

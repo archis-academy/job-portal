@@ -5,9 +5,9 @@ import com.archisacademy.jobportal.model.Skill;
 
 import java.util.List;
 
-public interface SkillsMapper {
-    SkillsDto toDto(Skills skill);
-    Skills toEntity(SkillsDto skillsDto);
-    List<SkillsDto> toSkillsDtos(List<Skills> skills);
+public interface SkillMapper {
+    SkillDto toDto(Skill skill);
+    Skill toEntity(SkillDto skillsDto);
+    List<SkillDto> toSkillsDtos(List<Skill> skills);
 
 }

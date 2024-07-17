@@ -19,7 +19,7 @@ public class ProfileDto {
     private String summary;
     private Long userId;
     private List<CertificateDto> certificates;
-    private List<SkillsDto> skills;
+    private List<SkillDto> skills;
     private List<ExperienceDto> experiences;
     private List<EducationDto> educations;
     private List<ProjectDto> projects;

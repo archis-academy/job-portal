@@ -8,6 +8,7 @@ import com.archisacademy.jobportal.model.Experience;
 import com.archisacademy.jobportal.repositories.ExperienceRepository;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.ExperienceService;
+import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,13 +26,13 @@ import java.util.stream.Collectors;
 public class ExperienceServiceImpl implements ExperienceService {
 
     private final ExperienceRepository experienceRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final ExperienceMapper experienceMapper;
     private final static MainLogger LOGGER = new MainLogger(ExperienceServiceImpl.class);
 
-    public ExperienceServiceImpl(ExperienceRepository experienceRepository, ProfileRepository profileRepository, ExperienceMapper experienceMapper) {
+    public ExperienceServiceImpl(ExperienceRepository experienceRepository, ProfileService profileService, ExperienceMapper experienceMapper) {
         this.experienceRepository = experienceRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.experienceMapper = experienceMapper;
     }
 
@@ -43,11 +44,7 @@ public class ExperienceServiceImpl implements ExperienceService {
             LOGGER.log(ExperienceMessage.END_DATE_BEFORE_START_DATE, HttpStatus.BAD_REQUEST);
         }
         Experience experience = experienceMapper.toEntity(experienceDto);
-        experience.setProfile(profileRepository.findById(experienceDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log(ExperienceMessage.PROFILE_NOT_FOUND + experienceDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
+        experience.setProfile(profileService.getProfileEntityById(experienceDto.getProfileId()));
         experienceRepository.save(experience);
         return ExperienceMessage.EXPERIENCE_CREATED_SUCCESS;
     }
