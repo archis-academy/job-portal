@@ -11,6 +11,7 @@ import com.archisacademy.jobportal.model.Profile;
 import com.archisacademy.jobportal.repositories.CertificateRepository;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.services.CertificateService;
+import com.archisacademy.jobportal.services.ProfileService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,13 @@ import java.util.stream.Collectors;
 @Service
 public class CertificateServiceImpl implements CertificateService {
     private final CertificateRepository certificateRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final CertificateMapper certificateMapper;
     private final MainLogger LOGGER = new MainLogger(CertificateService.class);
 
-    public CertificateServiceImpl(CertificateRepository certificateRepository, ProfileRepository profileRepository, CertificateMapper certificateMapper) {
+    public CertificateServiceImpl(CertificateRepository certificateRepository, ProfileService profileService, CertificateMapper certificateMapper) {
         this.certificateRepository = certificateRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.certificateMapper = certificateMapper;
     }
 
@@ -35,7 +36,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     public String createCertificate(CertificateDto certificateDto) {
         Certificate certificate = certificateMapper.toEntity(certificateDto);
-        certificate.setProfile(findProfileById(certificateDto.getProfileId()));
+        certificate.setProfile(profileService.getProfileEntityById(certificateDto.getProfileId()));
         certificateRepository.save(certificate);
         return CertificateMessage.CERTIFICATE_CREATED + certificate.getId();
     }
@@ -67,7 +68,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<CertificateDto> getAllCertificateByProfileId(long profileId) {
-        findProfileById(profileId);
+        profileService.getProfileEntityById(profileId);
 
         return certificateRepository.findByProfileId(profileId).stream()
                 .map(certificateMapper::toDto)
@@ -82,12 +83,6 @@ public class CertificateServiceImpl implements CertificateService {
                 });
     }
 
-    private Profile findProfileById(long profileId) {
-        return profileRepository.findById(profileId)
-                .orElseThrow(() -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + profileId, HttpStatus.NOT_FOUND);
-                    return null;
-                });
-    }
+
 
 }

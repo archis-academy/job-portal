@@ -23,18 +23,18 @@ public class ProfileServiceImpl implements ProfileService {
     private final EducationMapper educationMapper;
     private final ExperienceMapper experienceMapper;
     private final CertificateMapper certificateMapper;
-    private final SkillsMapper skillsMapper;
+    private final SkillMapper skillMapper;
     private final ProjectMapper projectMapper;
     private final UserRepository userRepository;
     private final static MainLogger LOGGER = new MainLogger(ProfileServiceImpl.class);
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, EducationMapper educationMapper, ExperienceMapper experienceMapper, CertificateMapper certificateMapper, SkillsMapper skillsMapper, ProjectMapper projectMapper, UserRepository userRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper, EducationMapper educationMapper, ExperienceMapper experienceMapper, CertificateMapper certificateMapper, SkillMapper skillMapper, ProjectMapper projectMapper, UserRepository userRepository) {
         this.profileRepository = profileRepository;
         this.profileMapper = profileMapper;
         this.educationMapper = educationMapper;
         this.experienceMapper = experienceMapper;
         this.certificateMapper = certificateMapper;
-        this.skillsMapper = skillsMapper;
+        this.skillMapper = skillMapper;
         this.projectMapper = projectMapper;
         this.userRepository = userRepository;
     }
@@ -97,7 +97,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileDto.setEducations(educationMapper.toEducationDtos(profile.getEducations()));
         profileDto.setCertificates(certificateMapper.toCertificateDtos(profile.getCertificates()));
         profileDto.setExperiences(experienceMapper.toDtoList(profile.getExperiences()));
-        profileDto.setSkills(skillsMapper.toSkillsDtos(profile.getSkillsList()));
+        profileDto.setSkills(skillMapper.toSkillsDtos(profile.getSkillList()));
         profileDto.setProjects(projectMapper.toProjectDtos(profile.getProjects()));
         return profileDto;
     }

@@ -4,7 +4,7 @@ import com.archisacademy.jobportal.dto.SkillDto;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ProfilesMessage;
 import com.archisacademy.jobportal.loggers.messages.SkillsMessage;
-import com.archisacademy.jobportal.mapper.SkillsMapper;
+import com.archisacademy.jobportal.mapper.SkillMapper;
 import com.archisacademy.jobportal.model.Skill;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.SkillsRepository;
@@ -21,19 +21,19 @@ import java.util.stream.Collectors;
 public class SkillServiceImpl implements SkillService {
     private final SkillsRepository skillsRepository;
     private final ProfileRepository profileRepository;
-    private final SkillsMapper skillsMapper;
+    private final SkillMapper skillMapper;
     private final static MainLogger LOGGER = new MainLogger(SkillServiceImpl.class);
 
-    public SkillServiceImpl(SkillsRepository skillsRepository, ProfileRepository profileRepository, SkillsMapper skillsMapper) {
+    public SkillServiceImpl(SkillsRepository skillsRepository, ProfileRepository profileRepository, SkillMapper skillMapper) {
         this.skillsRepository = skillsRepository;
         this.profileRepository = profileRepository;
-        this.skillsMapper = skillsMapper;
+        this.skillMapper = skillMapper;
     }
 
     @Override
     @Transactional
     public String createSkill(SkillDto skillDto) {
-        Skill skill = skillsMapper.toEntity(skillDto);
+        Skill skill = skillMapper.toEntity(skillDto);
         skill.setProfile(profileRepository.findById(skillDto.getProfileId())
                 .orElseThrow(() -> {
                     LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillDto.getProfileId(), HttpStatus.NOT_FOUND);
@@ -75,7 +75,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public List<SkillDto> getAllSkills() {
         List<Skill> skills = skillsRepository.findAll();
-        return skills.stream().map(skillsMapper::toDto).collect(Collectors.toList());
+        return skills.stream().map(skillMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -84,14 +84,14 @@ public class SkillServiceImpl implements SkillService {
         if (optionalSkill.isEmpty()){
             LOGGER.log(SkillsMessage.SKILLS_NOT_FOUND + id, HttpStatus.NOT_FOUND);
         }
-        return skillsMapper.toDto(optionalSkill.get());
+        return skillMapper.toDto(optionalSkill.get());
     }
 
     @Override
     public List<SkillDto> searchSkills(String keyword) {
         return skillsRepository.findByNameContainingIgnoreCase(keyword)
                 .stream()
-                .map(skillsMapper::toDto)
+                .map(skillMapper::toDto)
                 .collect(Collectors.toList());
     }
 

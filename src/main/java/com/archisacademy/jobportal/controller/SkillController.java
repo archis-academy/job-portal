@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/skills")
-public class SkillsController {
+public class SkillController {
     private final SkillService skillService;
 
-    public SkillsController(SkillService skillService) {
+    public SkillController(SkillService skillService) {
         this.skillService = skillService;
     }
 
