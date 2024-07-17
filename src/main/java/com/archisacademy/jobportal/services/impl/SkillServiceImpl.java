@@ -8,6 +8,7 @@ import com.archisacademy.jobportal.mapper.SkillMapper;
 import com.archisacademy.jobportal.model.Skill;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.SkillsRepository;
+import com.archisacademy.jobportal.services.ProfileService;
 import com.archisacademy.jobportal.services.SkillService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -20,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class SkillServiceImpl implements SkillService {
     private final SkillsRepository skillsRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final SkillMapper skillMapper;
     private final static MainLogger LOGGER = new MainLogger(SkillServiceImpl.class);
 
-    public SkillServiceImpl(SkillsRepository skillsRepository, ProfileRepository profileRepository, SkillMapper skillMapper) {
+    public SkillServiceImpl(SkillsRepository skillsRepository, ProfileService profileService, SkillMapper skillMapper) {
         this.skillsRepository = skillsRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.skillMapper = skillMapper;
     }
 
@@ -34,11 +35,7 @@ public class SkillServiceImpl implements SkillService {
     @Transactional
     public String createSkill(SkillDto skillDto) {
         Skill skill = skillMapper.toEntity(skillDto);
-        skill.setProfile(profileRepository.findById(skillDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
+        skill.setProfile(profileService.getProfileEntityById(skillDto.getProfileId()));
         skillsRepository.save(skill);
         return SkillsMessage.SKILL_CREATED + skill.getId();
     }
@@ -61,11 +58,7 @@ public class SkillServiceImpl implements SkillService {
 
         existingSkill.setName(skillDto.getName());
         existingSkill.setDescription(skillDto.getDescription());
-        existingSkill.setProfile(profileRepository.findById(skillDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log(ProfilesMessage.PROFILE_NOT_FOUND + skillDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
+        existingSkill.setProfile(profileService.getProfileEntityById(skillDto.getProfileId()));
 
         skillsRepository.save(existingSkill);
 

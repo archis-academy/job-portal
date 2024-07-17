@@ -7,6 +7,7 @@ import com.archisacademy.jobportal.mapper.ProjectMapper;
 import com.archisacademy.jobportal.model.Project;
 import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.ProjectRepository;
+import com.archisacademy.jobportal.services.ProfileService;
 import com.archisacademy.jobportal.services.ProjectService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final ProjectMapper projectMapper;
     private final static MainLogger LOGGER = new MainLogger(ProjectServiceImpl.class);
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProfileRepository profileRepository, ProjectMapper projectMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProfileService profileService, ProjectMapper projectMapper) {
         this.projectRepository = projectRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.projectMapper = projectMapper;
     }
 
@@ -36,11 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public String createProject(ProjectDto projectDto) {
         Project project = projectMapper.toEntity(projectDto);
-        project.setProfile(profileRepository.findById(projectDto.getProfileId())
-                .orElseThrow(() -> {
-                    LOGGER.log(ProjectMessage.PROFILE_NOT_FOUND + projectDto.getProfileId(), HttpStatus.NOT_FOUND);
-                    return null;
-                }));
+        project.setProfile(profileService.getProfileEntityById(projectDto.getProfileId()));
         projectRepository.save(project);
         return ProjectMessage.PROJECT_CREATED_SUCCESS;
     }
