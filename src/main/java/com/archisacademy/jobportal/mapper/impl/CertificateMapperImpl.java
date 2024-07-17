@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Component
@@ -37,5 +38,12 @@ public class CertificateMapperImpl implements CertificateMapper {
                 .certificateHours(certificateDto.getHours())
                 .certificateUrl(certificateDto.getUrl())
                 .build();
+    }
+
+    @Override
+    public List<CertificateDto> toCertificateDtos(List<Certificate> certificates) {
+        return certificates.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

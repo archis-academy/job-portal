@@ -5,6 +5,8 @@ import com.archisacademy.jobportal.mapper.ProjectMapper;
 import com.archisacademy.jobportal.model.Project;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ProjectMapperImpl implements ProjectMapper {
 
@@ -40,5 +42,12 @@ public class ProjectMapperImpl implements ProjectMapper {
                 .technologies(projectDto.getTechnologies())
                 .description(projectDto.getDescription())
                 .build();
+    }
+
+    @Override
+    public List<ProjectDto> toProjectDtos(List<Project> projects) {
+        return projects.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

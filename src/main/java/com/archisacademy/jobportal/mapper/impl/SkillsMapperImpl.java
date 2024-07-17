@@ -5,6 +5,8 @@ import com.archisacademy.jobportal.mapper.SkillsMapper;
 import com.archisacademy.jobportal.model.Skill;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class SkillsMapperImpl implements SkillsMapper {
     @Override
@@ -22,5 +24,12 @@ public class SkillsMapperImpl implements SkillsMapper {
                 .name(skillDto.getName())
                 .description(skillDto.getDescription())
                 .build();
+    }
+
+    @Override
+    public List<SkillsDto> toSkillsDtos(List<Skills> skills) {
+        return skills.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

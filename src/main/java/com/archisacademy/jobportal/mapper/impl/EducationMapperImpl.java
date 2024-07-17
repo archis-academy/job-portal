@@ -6,6 +6,8 @@ import com.archisacademy.jobportal.model.Education;
 import com.archisacademy.jobportal.model.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class EducationMapperImpl implements EducationMapper {
 
@@ -41,5 +43,12 @@ public class EducationMapperImpl implements EducationMapper {
                 .startDate(educationDto.getStartDate())
                 .profile(profile)
                 .build();
+    }
+
+    @Override
+    public List<EducationDto> toEducationDtos(List<Education> educations) {
+        return educations.stream()
+                .map(this::toDto)
+                .toList();
     }
 }
