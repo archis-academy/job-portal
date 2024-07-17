@@ -36,8 +36,8 @@ public class SkillServiceImpl implements SkillService {
     public String createSkill(SkillDto skillDto) {
         Skill skill = skillMapper.toEntity(skillDto);
         skill.setProfile(profileService.getProfileEntityById(skillDto.getProfileId()));
-        skillsRepository.save(skill);
-        return SkillsMessage.SKILL_CREATED + skill.getId();
+        Skill savedSkill=skillsRepository.save(skill);
+        return SkillsMessage.SKILL_CREATED + savedSkill.getId();
     }
 
     @Override
@@ -49,10 +49,10 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     @Transactional
-    public String updateSkill(long skillId, SkillDto skillDto) {
-        Skill existingSkill = skillsRepository.findById(skillId)
+    public String updateSkill(SkillDto skillDto) {
+        Skill existingSkill = skillsRepository.findById(skillDto.getId())
                 .orElseThrow(() -> {
-                    LOGGER.log(SkillsMessage.SKILLS_NOT_FOUND + skillId, HttpStatus.NOT_FOUND);
+                    LOGGER.log(SkillsMessage.SKILLS_NOT_FOUND + skillDto.getId(), HttpStatus.NOT_FOUND);
                     return null;
                 });
 
@@ -62,7 +62,7 @@ public class SkillServiceImpl implements SkillService {
 
         skillsRepository.save(existingSkill);
 
-        return SkillsMessage.SKILL_UPDATED + skillId;
+        return SkillsMessage.SKILL_UPDATED + skillDto.getId();
     }
 
     @Override

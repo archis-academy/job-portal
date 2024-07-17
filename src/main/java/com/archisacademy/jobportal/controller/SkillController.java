@@ -27,9 +27,9 @@ public class SkillController {
         return new ResponseEntity<>(skillService.deleteSkillById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateSkill(@PathVariable Long id, @RequestBody SkillDto skillDto) {
-        return new ResponseEntity<>(skillService.updateSkill(id, skillDto), HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<String> updateSkill( @RequestBody SkillDto skillDto) {
+        return new ResponseEntity<>(skillService.updateSkill(skillDto), HttpStatus.OK);
     }
 
     @GetMapping
