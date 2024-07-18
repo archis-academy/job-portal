@@ -5,7 +5,6 @@ import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ProjectMessage;
 import com.archisacademy.jobportal.mapper.ProjectMapper;
 import com.archisacademy.jobportal.model.Project;
-import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.ProjectRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import com.archisacademy.jobportal.services.ProjectService;
