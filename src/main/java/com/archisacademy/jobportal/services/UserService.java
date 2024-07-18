@@ -23,4 +23,8 @@ public interface UserService {
     List<UserDto> getUsersByUserRole(UserRole userRole);
 
     long countUsers();
+
+    void addConnection(String userUUID, String connectionUuid);
+
+    void removeConnection(String userUUID, String connectionUuid);
 }

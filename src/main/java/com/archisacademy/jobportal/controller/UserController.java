@@ -74,4 +74,20 @@ public class UserController {
         String message = exists ? "User exists with UUID: " + uuid : "User not found with UUID: " + uuid;
         return new ResponseEntity<>(message, exists ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/{userUUID}/connections/{connectionUuid}")
+    public ResponseEntity<String> addConnection(
+            @PathVariable("userUUID") String userUUID,
+            @PathVariable("connectionUuid") String connectionUuid) {
+        userService.addConnection(userUUID, connectionUuid);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Connection added successfully.");
+    }
+
+    @DeleteMapping("/{userUUID}/connections/{connectionUuid}")
+    public ResponseEntity<String> removeConnection(
+            @PathVariable("userUUID") String userUUID,
+            @PathVariable("connectionUuid") String connectionUuid) {
+        userService.removeConnection(userUUID, connectionUuid);
+        return ResponseEntity.ok("Connection removed successfully.");
+    }
 }

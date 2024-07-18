@@ -2,10 +2,12 @@ package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.ProfileDto;
 import com.archisacademy.jobportal.dto.UserDto;
+import com.archisacademy.jobportal.enums.ConnectionStatus;
 import com.archisacademy.jobportal.enums.UserRole;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.mapper.UserMapper;
+import com.archisacademy.jobportal.model.Connection;
 import com.archisacademy.jobportal.model.User;
 import com.archisacademy.jobportal.repositories.UserRepository;
 import com.archisacademy.jobportal.services.ProfileService;
@@ -134,6 +136,60 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countUsers() {
         return userRepository.count();
+    }
+
+    @Override
+    public void addConnection(String userUUID, String connectionUuid) {
+
+        User user = userRepository.findByUuid(userUUID).orElseThrow(() -> {
+            LOGGER.log(UserMessage.USER_NOT_FOUND + userUUID, HttpStatus.NOT_FOUND);
+            return null;
+        });
+
+        User connectionUser = userRepository.findByUuid(connectionUuid).orElseThrow(() -> {
+            LOGGER.log(UserMessage.USER_NOT_FOUND_BY_CONNECTION_UUID + connectionUuid, HttpStatus.NOT_FOUND);
+            return null;
+        });
+
+        if (userUUID.equals(connectionUuid)) {
+            LOGGER.log(UserMessage.CANNOT_CONNECT_WITH_SELF, HttpStatus.BAD_REQUEST);
+        }
+
+        if (user.getConnectedUsers().stream().anyMatch(connection -> connection.getRequestedUser().getUuid().equals(connectionUuid))) {
+            LOGGER.log(UserMessage.CONNECTION_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
+        }
+
+        Connection connection = new Connection();
+        connection.setUser(user);
+        connection.setRequestedUser(connectionUser);
+        connection.setStatus(ConnectionStatus.PENDING);
+        connection.setRequestDate(new Timestamp(System.currentTimeMillis()));
+
+        user.getConnectedUsers().add(connection);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeConnection(String userUUID, String connectionUuid) {
+
+        User user = userRepository.findByUuid(userUUID).orElseThrow(() -> {
+            LOGGER.log(UserMessage.USER_NOT_FOUND + userUUID, HttpStatus.NOT_FOUND);
+            return null;
+        });
+
+        Connection connectionToRemove = user.getConnectedUsers().stream()
+                .filter(connection -> connection.getRequestedUser().getUuid().equals(connectionUuid))
+                .findFirst()
+                .orElseThrow(() -> {
+                            LOGGER.log(UserMessage.CONNECTION_NOT_FOUND + connectionUuid);
+                            return null;
+                        }
+                );
+
+        user.getConnectedUsers().remove(connectionToRemove);
+
+        userRepository.save(user);
     }
 }
 

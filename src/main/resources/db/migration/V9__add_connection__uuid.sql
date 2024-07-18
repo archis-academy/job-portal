@@ -1,0 +1,3 @@
+ALTER TABLE connections
+ADD COLUMN uuid VARCHAR(255);
+
