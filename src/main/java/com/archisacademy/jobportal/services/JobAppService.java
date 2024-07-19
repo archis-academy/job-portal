@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 
 public interface JobAppService {
+
     String createJob(JobDto jobDto);
 
     String updateJob(Long jobId, JobDto jobDto);

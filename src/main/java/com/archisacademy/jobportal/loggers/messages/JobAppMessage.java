@@ -14,4 +14,5 @@ public final class JobAppMessage {
     public static final String JOB_ALREADY_EXISTS = "Job already exists.";
     public static final String JOB_HAS_APPLICATIONS = "Job has applications.";
     public static final String INVALID_JOB_DETAILS = "Invalid job details.";
+    public static final String JOB_APPLIED_SUCCESS = "Job applied successfully.";
 }

@@ -45,13 +45,11 @@ public class JobAppServiceImpl implements JobAppService {
     @Transactional
     public String createJob(JobDto jobDto) {
 
-        // Job nesnesinin gerekli alanlarının doldurulduğunu kontrol edin
         if (jobDto.getCompanyName() == null || jobDto.getPosition() == null || jobDto.getStartDate() == null) {
             LOGGER.log(JobAppMessage.INVALID_JOB_DETAILS, HttpStatus.BAD_REQUEST);
             return JobAppMessage.INVALID_JOB_DETAILS;
         }
 
-        // Aynı şirkete ait, aynı pozisyonda ve aynı tarihlerde bir iş ilanının zaten var olup olmadığını kontrol edin
         boolean jobExists = jobRepository.existsByCompanyNameAndPositionAndStartDate(
                 jobDto.getCompanyName(), jobDto.getPosition(), jobDto.getStartDate());
 
@@ -126,6 +124,7 @@ public class JobAppServiceImpl implements JobAppService {
     }
 
     @Override
+    @Transactional
     public String applyToJob(Long jobId, String userUuid) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> {
             LOGGER.log(JobAppMessage.JOB_NOT_FOUND + jobId, HttpStatus.NOT_FOUND);
