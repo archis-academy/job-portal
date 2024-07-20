@@ -1,5 +1,7 @@
 package com.archisacademy.jobportal.controller;
 
+import com.archisacademy.jobportal.loggers.messages.JobAppMessage;
+import com.archisacademy.jobportal.services.JobAppService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,21 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final JobAppService jobAppService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JobAppService jobAppService) {
         this.userService = userService;
-    }
-
-    @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody UserDto userDto) {
-        String message = userService.createUser(userDto);
-        return new ResponseEntity<>(message, HttpStatus.CREATED);
+        this.jobAppService = jobAppService;
     }
 
     @DeleteMapping("/{uuid}")
@@ -69,10 +68,10 @@ public class UserController {
     }
 
     @GetMapping("/exists/{uuid}")
-    public ResponseEntity<String> checkUserExistsByUUID(@PathVariable String uuid) {
-        boolean exists = userService.checkUserExistsByUUID(uuid);
-        String message = exists ? "User exists with UUID: " + uuid : "User not found with UUID: " + uuid;
-        return new ResponseEntity<>(message, exists ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, Boolean>> checkUserExistsByUUID(@PathVariable String uuid) {
+        Map<String, Boolean> response = userService.checkUserExistsByUUID(uuid);
+        HttpStatus status = response.get("is_exist") ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(response, status);
     }
 
     @PostMapping("/{userUUID}/connections/{connectionUuid}")
@@ -83,11 +82,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Connection added successfully.");
     }
 
-    @DeleteMapping("/{userUUID}/connections/{connectionUuid}")
-    public ResponseEntity<String> removeConnection(
-            @PathVariable("userUUID") String userUUID,
-            @PathVariable("connectionUuid") String connectionUuid) {
-        userService.removeConnection(userUUID, connectionUuid);
-        return ResponseEntity.ok("Connection removed successfully.");
+    @PostMapping("/{jobId}/apply")
+    public ResponseEntity<String> applyToJob(@PathVariable Long jobId, @RequestParam String userUuid) {
+        String responseMessage = jobAppService.applyToJob(jobId, userUuid);
+        if (responseMessage.equals(JobAppMessage.JOB_APPLIED_SUCCESS)) {
+            return ResponseEntity.ok(responseMessage);
+        } else {
+            return ResponseEntity.badRequest().body(responseMessage);
+        }
     }
 }

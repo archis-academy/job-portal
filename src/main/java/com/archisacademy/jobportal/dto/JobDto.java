@@ -1,6 +1,5 @@
 package com.archisacademy.jobportal.dto;
 
-import com.archisacademy.jobportal.enums.LocationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class JobDto {
     private String companyName;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private Timestamp createdDate;
     private String location;
     private String locationType;
     private String position;

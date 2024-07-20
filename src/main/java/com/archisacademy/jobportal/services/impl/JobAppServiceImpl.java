@@ -21,8 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,16 +44,15 @@ public class JobAppServiceImpl implements JobAppService {
     }
 
     @Override
-    @Transactional
     public String createJob(JobDto jobDto) {
 
-        if (jobDto.getCompanyName() == null || jobDto.getPosition() == null || jobDto.getStartDate() == null) {
+        if (jobDto.getCompanyName() == null || jobDto.getPosition() == null || jobDto.getCreatedDate() == null) {
             LOGGER.log(JobAppMessage.INVALID_JOB_DETAILS, HttpStatus.BAD_REQUEST);
             return JobAppMessage.INVALID_JOB_DETAILS;
         }
 
-        boolean jobExists = jobRepository.existsByCompanyNameAndPositionAndStartDate(
-                jobDto.getCompanyName(), jobDto.getPosition(), jobDto.getStartDate());
+        boolean jobExists = jobRepository.existsByCompanyNameAndPositionAndCreatedDate(
+                jobDto.getCompanyName(), jobDto.getPosition(), jobDto.getCreatedDate());
 
         if (jobExists) {
             LOGGER.log(JobAppMessage.JOB_ALREADY_EXISTS, HttpStatus.CONFLICT);
@@ -64,7 +65,6 @@ public class JobAppServiceImpl implements JobAppService {
     }
 
     @Override
-    @Transactional
     public String updateJob(Long jobId, JobDto jobDto) {
 
         Job existingJob = jobRepository.findById(jobId).orElseThrow(() -> {
@@ -73,8 +73,7 @@ public class JobAppServiceImpl implements JobAppService {
         });
 
         existingJob.setCompanyName(jobDto.getCompanyName());
-        existingJob.setStartDate(jobDto.getStartDate());
-        existingJob.setEndDate(jobDto.getEndDate());
+        existingJob.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         existingJob.setLocation(jobDto.getLocation());
         existingJob.setLocationType(LocationType.valueOf(jobDto.getLocationType()));
         existingJob.setPosition(jobDto.getPosition());
@@ -126,6 +125,7 @@ public class JobAppServiceImpl implements JobAppService {
     @Override
     @Transactional
     public String applyToJob(Long jobId, String userUuid) {
+
         Job job = jobRepository.findById(jobId).orElseThrow(() -> {
             LOGGER.log(JobAppMessage.JOB_NOT_FOUND + jobId, HttpStatus.NOT_FOUND);
             return null;
@@ -136,16 +136,16 @@ public class JobAppServiceImpl implements JobAppService {
             return null;
         });
 
-        boolean isAlreadyApplied = jobApplicationMapperRepository.existsByJobAndUsers(job, user);
+        Optional<JobApplicationMapper> optionalJobApplicationMapper= jobApplicationMapperRepository.findByJobAndUsersContaining(job,user);
 
-        if (isAlreadyApplied) {
-            LOGGER.log(JobAppMessage.JOB_ALREADY_APPLIED, HttpStatus.BAD_REQUEST);
+        if (optionalJobApplicationMapper.isPresent()){
+            LOGGER.log(JobAppMessage.JOB_ALREADY_APPLIED,HttpStatus.BAD_REQUEST);
             return JobAppMessage.JOB_ALREADY_APPLIED;
         }
 
         JobApplicationMapper jobApplicationMapper = new JobApplicationMapper();
         jobApplicationMapper.setJob(job);
-        jobApplicationMapper.setUsers(Collections.singletonList(user));
+        jobApplicationMapper.getUsers().add(user);
 
         jobApplicationMapperRepository.save(jobApplicationMapper);
 

@@ -6,10 +6,12 @@ import com.archisacademy.jobportal.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface JobApplicationMapperRepository extends JpaRepository<JobApplicationMapper, Long> {
 
-    boolean existsByJobAndUsers(Job job, User user);
-
     List<JobApplicationMapper> findByJob(Job job);
+
+    Optional<JobApplicationMapper> findByJobAndUsersContaining(Job job, User user);
+
 }

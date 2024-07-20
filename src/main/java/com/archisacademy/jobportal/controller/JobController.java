@@ -63,14 +63,4 @@ public class JobController {
         Page<JobDto> jobs = jobAppService.getAllJobs(pageNo, pageSize);
         return ResponseEntity.ok(jobs);
     }
-
-    @PostMapping("/{jobId}/apply")
-    public ResponseEntity<String> applyToJob(@PathVariable Long jobId, @RequestParam String userUuid) {
-        String responseMessage = jobAppService.applyToJob(jobId, userUuid);
-        if (responseMessage.equals(JobAppMessage.JOB_APPLIED_SUCCESS)) {
-            return ResponseEntity.ok(responseMessage);
-        } else {
-            return ResponseEntity.badRequest().body(responseMessage);
-        }
-    }
 }

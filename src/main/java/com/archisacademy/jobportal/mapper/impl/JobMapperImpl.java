@@ -25,8 +25,7 @@ public class JobMapperImpl implements JobMapper {
 
         return JobDto.builder()
                 .companyName(job.getCompanyName())
-                .startDate(job.getStartDate())
-                .endDate(job.getEndDate())
+                .createdDate(job.getCreatedDate())
                 .location(job.getLocation())
                 .locationType(String.valueOf(job.getLocationType()))
                 .position(job.getPosition())
@@ -39,8 +38,7 @@ public class JobMapperImpl implements JobMapper {
     public Job toEntity(JobDto jobDto) {
         return Job.builder()
                 .companyName(jobDto.getCompanyName())
-                .startDate(new Timestamp(System.currentTimeMillis()))
-                .endDate(new Timestamp(System.currentTimeMillis()))
+                .createdDate(new Timestamp(System.currentTimeMillis()))
                 .location(jobDto.getLocation())
                 .locationType(LocationType.valueOf(jobDto.getLocationType()))
                 .position(jobDto.getPosition())

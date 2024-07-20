@@ -9,6 +9,7 @@ import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.mapper.UserMapper;
 import com.archisacademy.jobportal.model.Connection;
 import com.archisacademy.jobportal.model.User;
+import com.archisacademy.jobportal.repositories.ConnectionRepository;
 import com.archisacademy.jobportal.repositories.UserRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import com.archisacademy.jobportal.services.UserService;
@@ -22,17 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ConnectionRepository connectionRepository;
     private final UserMapper userMapper;
     private final ProfileService profileService;
     private final static MainLogger LOGGER = new MainLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, ProfileService profileService) {
+    public UserServiceImpl(UserRepository userRepository, ConnectionRepository connectionRepository, UserMapper userMapper, ProfileService profileService) {
         this.userRepository = userRepository;
+        this.connectionRepository = connectionRepository;
         this.userMapper = userMapper;
         this.profileService = profileService;
     }
@@ -113,12 +117,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUserExistsByUUID(String UUID) {
-
-        if (!userRepository.existsByUuid(UUID)) {
+    public Map<String, Boolean> checkUserExistsByUUID(String UUID) {
+        boolean exists = userRepository.existsByUuid(UUID);
+        if (!exists) {
             LOGGER.log(UserMessage.USER_NOT_FOUND_BY_UUID + UUID, HttpStatus.NOT_FOUND);
         }
-        return true;
+        return Map.of("is_exist", exists);
     }
 
     @Override
@@ -165,6 +169,8 @@ public class UserServiceImpl implements UserService {
         connection.setStatus(ConnectionStatus.PENDING);
         connection.setRequestDate(new Timestamp(System.currentTimeMillis()));
 
+        connectionRepository.save(connection);
+
         user.getConnectedUsers().add(connection);
 
         userRepository.save(user);
@@ -188,6 +194,7 @@ public class UserServiceImpl implements UserService {
                 );
 
         user.getConnectedUsers().remove(connectionToRemove);
+        connectionRepository.delete(connectionToRemove);
 
         userRepository.save(user);
     }

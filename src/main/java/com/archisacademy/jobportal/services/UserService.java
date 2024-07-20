@@ -5,6 +5,7 @@ import com.archisacademy.jobportal.enums.UserRole;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -18,7 +19,7 @@ public interface UserService {
 
     UserDto getUserByUUID(String UUID);
 
-    boolean checkUserExistsByUUID(String UUID);
+    Map<String,Boolean> checkUserExistsByUUID(String UUID);
 
     List<UserDto> getUsersByUserRole(UserRole userRole);
 
