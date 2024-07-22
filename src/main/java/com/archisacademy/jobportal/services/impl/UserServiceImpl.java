@@ -169,11 +169,10 @@ public class UserServiceImpl implements UserService {
         connection.setStatus(ConnectionStatus.PENDING);
         connection.setRequestDate(new Timestamp(System.currentTimeMillis()));
 
-        connectionRepository.save(connection);
+        Connection savedConnection = connectionRepository.save(connection);
 
-        user.getConnectedUsers().add(connection);
+        user.getConnectedUsers().add(savedConnection);
 
-        userRepository.save(user);
     }
 
     @Override
