@@ -2,6 +2,7 @@ package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.CommentDto;
 import com.archisacademy.jobportal.dto.PostDto;
+import com.archisacademy.jobportal.enums.UserRole;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.PostAppMessage;
 import com.archisacademy.jobportal.mapper.CommentMapper;
@@ -69,7 +70,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public String updatePost(Long postId, PostDto postDto) {
-        Post existingPost = postRepository.findById()
+        Post existingPost = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     LOGGER.log(PostAppMessage.POST_NOT_FOUND, HttpStatus.NOT_FOUND);
                     return null;
@@ -159,8 +160,6 @@ public class PostServiceImpl implements PostService {
     }
 
     private boolean userCanCreatePost(User user) {
-        // Implement the logic to determine if the user can create a post
-        // For example, check user roles, account status, etc.
-        return true; // Assuming all users can create posts for now
+        return user.getUserRole() == UserRole.USER && user.isActive();
     }
 }

@@ -6,3 +6,5 @@ ALTER TABLE jobs DROP COLUMN end_date;
 
 ALTER TABLE jobs ADD COLUMN created_date TIMESTAMP;
 
+ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT true;
+

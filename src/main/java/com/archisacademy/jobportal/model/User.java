@@ -37,6 +37,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private UserRole userRole;
+    @Column(name = "is_active")
+    private boolean isActive;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
