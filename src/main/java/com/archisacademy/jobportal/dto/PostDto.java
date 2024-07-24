@@ -16,5 +16,6 @@ public class PostDto {
     private String imageUrl;
     private String likedUsers;
     private Timestamp createdDate;
+    private String userUuid;
 
 }

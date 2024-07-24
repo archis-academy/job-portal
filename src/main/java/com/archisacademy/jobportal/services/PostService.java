@@ -1,8 +1,9 @@
 package com.archisacademy.jobportal.services;
 
+import com.archisacademy.jobportal.dto.CommentDto;
 import com.archisacademy.jobportal.dto.PostDto;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public interface PostService {
     String createPost(String userUuid, PostDto postDto);
@@ -13,5 +14,9 @@ public interface PostService {
 
     PostDto getPostById(Long postId);
 
-    List<PostDto> getAllPosts();
+    Page<PostDto> getAllPosts(int pageNo, int pageSize);
+
+    String likePost(Long postId, String userUuid);
+
+    String addComment(Long postId, CommentDto commentDto);
 }
