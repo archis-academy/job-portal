@@ -1,6 +1,7 @@
 package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.dto.ProfileDto;
+import com.archisacademy.jobportal.dto.RegistrationDto;
 import com.archisacademy.jobportal.dto.UserDto;
 import com.archisacademy.jobportal.enums.ConnectionStatus;
 import com.archisacademy.jobportal.enums.UserRole;
@@ -43,15 +44,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String createUser(UserDto userDto) {
+    public String createUser(RegistrationDto registrationDto) {
 
-        userRepository.findByUuid(userDto.getUuid())
-                .orElseThrow(() -> {
-                    LOGGER.log(UserMessage.USER_NOT_FOUND + userDto.getUuid(), HttpStatus.NOT_FOUND);
-                    return null;
+        userRepository.findByEmail(registrationDto.getEmail())
+                .ifPresent(user -> {
+                    LOGGER.log(UserMessage.USER_ALREADY_EXISTS + registrationDto.getEmail(), HttpStatus.CONFLICT);
                 });
 
-        User userEntity = userMapper.toEntity(userDto);
+        User userEntity = userMapper.toEntity(registrationDto);
         User savedUser = userRepository.save(userEntity);
 
         ProfileDto profileDto = ProfileDto.builder()
@@ -85,13 +85,12 @@ public class UserServiceImpl implements UserService {
                     return null;
                 });
 
-        existingUser.setFullName(userDto.getFullName());
-        existingUser.setEmail(userDto.getEmail());
         existingUser.setTelephone(userDto.getTelephone());
         existingUser.setAddress(userDto.getAddress());
-        existingUser.setUserRole(UserRole.valueOf(userDto.getUserRole()));
         existingUser.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
         userRepository.save(existingUser);
+
         return UserMessage.USER_UPDATED_SUCCESS;
     }
 
@@ -169,10 +168,7 @@ public class UserServiceImpl implements UserService {
         connection.setStatus(ConnectionStatus.PENDING);
         connection.setRequestDate(new Timestamp(System.currentTimeMillis()));
 
-        Connection savedConnection = connectionRepository.save(connection);
-
-        user.getConnectedUsers().add(savedConnection);
-
+        connectionRepository.save(connection);
     }
 
     @Override

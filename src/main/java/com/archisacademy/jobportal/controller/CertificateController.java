@@ -2,6 +2,7 @@ package com.archisacademy.jobportal.controller;
 
 import com.archisacademy.jobportal.dto.CertificateDto;
 import com.archisacademy.jobportal.services.CertificateService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class CertificateController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createCertificate(@RequestBody CertificateDto certificateDto) {
+    public ResponseEntity<String> createCertificate(@RequestBody @Valid CertificateDto certificateDto) {
         return new ResponseEntity<>(certificateService.createCertificate(certificateDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCertificate(@PathVariable Long id, @RequestBody CertificateDto certificateDto) {
+    public ResponseEntity<String> updateCertificate(@PathVariable Long id, @RequestBody @Valid CertificateDto certificateDto) {
         return new ResponseEntity<>(certificateService.updateCertificate(id, certificateDto), HttpStatus.OK);
     }
 

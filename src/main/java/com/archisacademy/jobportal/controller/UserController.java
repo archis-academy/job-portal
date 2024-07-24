@@ -1,6 +1,7 @@
 package com.archisacademy.jobportal.controller;
 
 import com.archisacademy.jobportal.loggers.messages.JobAppMessage;
+import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.services.JobAppService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,5 +91,11 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body(responseMessage);
         }
+    }
+
+    @DeleteMapping("/{userUuid}/connections/{connectionUuid}")
+    public ResponseEntity<String> removeConnection(@PathVariable String userUuid, @PathVariable String connectionUuid) {
+        userService.removeConnection(userUuid, connectionUuid);
+        return new ResponseEntity<>(UserMessage.CONNECTION_REMOVED_SUCCESS, HttpStatus.OK);
     }
 }

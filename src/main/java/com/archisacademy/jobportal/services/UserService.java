@@ -1,5 +1,6 @@
 package com.archisacademy.jobportal.services;
 
+import com.archisacademy.jobportal.dto.RegistrationDto;
 import com.archisacademy.jobportal.dto.UserDto;
 import com.archisacademy.jobportal.enums.UserRole;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public interface UserService {
 
-    String createUser(UserDto userDto);
+    String createUser(RegistrationDto registrationDto);
 
     String deleteUser(String UUID);
 
@@ -19,7 +20,7 @@ public interface UserService {
 
     UserDto getUserByUUID(String UUID);
 
-    Map<String,Boolean> checkUserExistsByUUID(String UUID);
+    Map<String, Boolean> checkUserExistsByUUID(String UUID);
 
     List<UserDto> getUsersByUserRole(UserRole userRole);
 
