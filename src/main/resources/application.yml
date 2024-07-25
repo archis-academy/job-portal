@@ -15,3 +15,31 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
           auto: update
+
+    mail:
+      host: ${EMAIL_HOST}
+      port: ${EMAIL_PORT}
+      username: ${EMAIL_ID}
+      password: ${EMAIL_PASSWORD}
+      default-encoding: UTF-8
+      properties:
+        mail:
+          mime:
+            charset: UTF-8
+          smtp:
+            writetimeout: 10000
+            connectiontimeout: 10000
+            timeout: 10000
+            auth: true
+            starttls:
+              enable: true
+              required: true
+    verify:
+      host: ${VERIFY_EMAIL_HOST}
+
+
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: <your-email-addres>
+EMAIL_PASSWORD: <your-email-password>
+VERIFY_EMAIL_HOST: http://localhost:8080
