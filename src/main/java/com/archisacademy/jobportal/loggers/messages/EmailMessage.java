@@ -1,7 +1,8 @@
 package com.archisacademy.jobportal.loggers.messages;
 
 public class EmailMessage {
-    public static final String NEW_USER_ACCOUNT_VERIFICATION = "New user account verification";
+    public static final String EMAIL_SENT_SUCCESSFULLY = "Email sent successfully";
+    public static final String EMAIL_SENDING_FAILED = "Email sending failed";
 
 
     private EmailMessage() {

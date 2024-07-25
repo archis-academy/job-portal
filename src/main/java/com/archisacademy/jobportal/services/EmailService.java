@@ -1,5 +1,7 @@
 package com.archisacademy.jobportal.services;
 
+import com.archisacademy.jobportal.dto.responses.EmailDetails;
+
 public interface EmailService {
-    void sendEmail(String to, String subject, String body);
+    String sendEmail(EmailDetails emailDetails,String email);
 }
