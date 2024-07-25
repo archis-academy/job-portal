@@ -4,21 +4,11 @@ import com.archisacademy.jobportal.dto.responses.EmailDetails;
 import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.EmailMessage;
 import com.archisacademy.jobportal.services.EmailService;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import org.flywaydb.core.internal.resource.filesystem.FileSystemResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
 
 @Service
 public class EmailServiceImpl implements EmailService {

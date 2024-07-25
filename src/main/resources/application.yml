@@ -40,6 +40,6 @@ spring:
 
 EMAIL_HOST: smtp.gmail.com
 EMAIL_PORT: 587
-EMAIL_ID: <your-email-addres>
-EMAIL_PASSWORD: <your-email-password>
-VERIFY_EMAIL_HOST: http://localhost:8080
+EMAIL_ID: "furkanerenoglu26@gmail.com"
+EMAIL_PASSWORD: yyfp ftnj obus pcvx
+VERIFY_EMAIL_HOST: http://localhost:8081
