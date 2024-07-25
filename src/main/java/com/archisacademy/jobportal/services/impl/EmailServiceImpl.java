@@ -1,6 +1,7 @@
 package com.archisacademy.jobportal.services.impl;
 
 import com.archisacademy.jobportal.loggers.MainLogger;
+import com.archisacademy.jobportal.loggers.messages.EmailMessage;
 import com.archisacademy.jobportal.services.EmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,8 +26,11 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmail(String to, String subject, String body) {
         try{
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setSubject();
+            message.setSubject(EmailMessage.NEW_USER_ACCOUNT_VERIFICATION);
             message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setText(body);
+            mailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
 
