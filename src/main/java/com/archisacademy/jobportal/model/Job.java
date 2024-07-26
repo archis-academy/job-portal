@@ -22,10 +22,8 @@ public class Job {
     private Long id;
     @Column(name = "company_name")
     private String companyName;
-    @Column(name = "start_date")
-    private Timestamp startDate;
-    @Column(name = "end_date")
-    private Timestamp endDate;
+    @Column(name = "created_date")
+    private Timestamp createdDate;
     @Column(name = "location")
     private String location;
     @Enumerated(EnumType.STRING)

@@ -20,6 +20,8 @@ public class Connection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "uuid")
+    private String uuid;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ConnectionStatus status;

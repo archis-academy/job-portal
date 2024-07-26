@@ -23,5 +23,6 @@ public class ProfileDto {
     private List<ExperienceDto> experiences;
     private List<EducationDto> educations;
     private List<ProjectDto> projects;
+    private String userUuid;
 
 }
