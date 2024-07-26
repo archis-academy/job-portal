@@ -1,8 +1,10 @@
 package com.archisacademy.jobportal.controller;
 
+import com.archisacademy.jobportal.dto.PostDto;
 import com.archisacademy.jobportal.loggers.messages.JobAppMessage;
 import com.archisacademy.jobportal.loggers.messages.UserMessage;
 import com.archisacademy.jobportal.services.JobAppService;
+import com.archisacademy.jobportal.services.PostService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +24,12 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
     private final JobAppService jobAppService;
 
-    public UserController(UserService userService, JobAppService jobAppService) {
+    public UserController(UserService userService, PostService postService, JobAppService jobAppService) {
         this.userService = userService;
+        this.postService = postService;
         this.jobAppService = jobAppService;
     }
 
@@ -97,5 +101,11 @@ public class UserController {
     public ResponseEntity<String> removeConnection(@PathVariable String userUuid, @PathVariable String connectionUuid) {
         userService.removeConnection(userUuid, connectionUuid);
         return new ResponseEntity<>(UserMessage.CONNECTION_REMOVED_SUCCESS, HttpStatus.OK);
+    }
+
+    @PostMapping("/{userUuid}/posts")
+    public ResponseEntity<String> createPost(@PathVariable String userUuid, @RequestBody PostDto postDto) {
+        String response = postService.createPost(userUuid, postDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

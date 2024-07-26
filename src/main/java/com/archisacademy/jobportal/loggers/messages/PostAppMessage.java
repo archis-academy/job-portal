@@ -15,4 +15,5 @@ public final class PostAppMessage {
     public static final String POST_LIKED_SUCCESS = "Post has been successfully liked.";
     public static final String COMMENT_ADDED_SUCCESS = "Comment has been successfully added.";
     public static final String USER_ALREADY_LIKED_POST = "User has already liked this post.";
+    public static final String POST_DESCRIPTION_IS_EMPTY = "Post description cannot be empty.";
 }

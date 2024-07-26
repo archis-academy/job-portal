@@ -10,8 +10,10 @@ import com.archisacademy.jobportal.mapper.PostMapper;
 import com.archisacademy.jobportal.model.Comment;
 import com.archisacademy.jobportal.model.Post;
 import com.archisacademy.jobportal.model.User;
+import com.archisacademy.jobportal.model.UserPostCommentMapper;
 import com.archisacademy.jobportal.repositories.CommentRepository;
 import com.archisacademy.jobportal.repositories.PostRepository;
+import com.archisacademy.jobportal.repositories.UserPostCommentMapperRepository;
 import com.archisacademy.jobportal.repositories.UserRepository;
 import com.archisacademy.jobportal.services.PostService;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,14 +37,16 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final UserPostCommentMapperRepository userPostCommentMapperRepository;
     private final CommentMapper commentMapper;
     private final static MainLogger LOGGER = new MainLogger(PostServiceImpl.class);
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserRepository userRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserRepository userRepository, CommentRepository commentRepository, UserPostCommentMapperRepository userPostCommentMapperRepository, CommentMapper commentMapper) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.userPostCommentMapperRepository = userPostCommentMapperRepository;
         this.commentMapper = commentMapper;
     }
 
@@ -58,11 +63,23 @@ public class PostServiceImpl implements PostService {
             return PostAppMessage.USER_NOT_ALLOWED_TO_CREATE_POST;
         }
 
+        if (postDto.getDescription() == null || postDto.getDescription().isEmpty()) {
+            LOGGER.log(PostAppMessage.POST_DESCRIPTION_IS_EMPTY);
+            return null;
+        }
+
         Post post = postMapper.toEntity(postDto);
         post.setUser(user);
         post.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 
         postRepository.save(post);
+
+        // Create and save UserPostCommentMapper
+        UserPostCommentMapper userPostCommentMapper = UserPostCommentMapper.builder()
+                .post(post)
+                .user(user)
+                .build();
+        userPostCommentMapperRepository.save(userPostCommentMapper);
 
         return PostAppMessage.POST_CREATED_SUCCESS;
     }
@@ -144,14 +161,23 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public String addComment(Long postId, CommentDto commentDto) {
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     LOGGER.log(PostAppMessage.POST_NOT_FOUND + postId, HttpStatus.NOT_FOUND);
                     return null;
                 });
 
+        User user = userRepository.findByUuid(commentDto.getUserUuid()).orElse(null);
+
+        if (user == null) {
+            LOGGER.log(PostAppMessage.USER_NOT_FOUND + commentDto.getUserUuid());
+            return null;
+        }
+
         Comment comment = commentMapper.toEntity(commentDto);
         comment.setPost(post);
+        comment.setUserPostCommentMapper(userPostCommentMapperRepository.findByUserAndPost(user, post));
         comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 
         commentRepository.save(comment);
