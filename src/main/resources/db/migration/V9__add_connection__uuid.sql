@@ -1,0 +1,8 @@
+ALTER TABLE connections
+ADD COLUMN uuid VARCHAR(255);
+
+ALTER TABLE jobs DROP COLUMN start_date;
+ALTER TABLE jobs DROP COLUMN end_date;
+
+ALTER TABLE jobs ADD COLUMN created_date TIMESTAMP;
+

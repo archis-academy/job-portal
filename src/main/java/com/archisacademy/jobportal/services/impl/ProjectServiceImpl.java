@@ -5,7 +5,6 @@ import com.archisacademy.jobportal.loggers.MainLogger;
 import com.archisacademy.jobportal.loggers.messages.ProjectMessage;
 import com.archisacademy.jobportal.mapper.ProjectMapper;
 import com.archisacademy.jobportal.model.Project;
-import com.archisacademy.jobportal.repositories.ProfileRepository;
 import com.archisacademy.jobportal.repositories.ProjectRepository;
 import com.archisacademy.jobportal.services.ProfileService;
 import com.archisacademy.jobportal.services.ProjectService;
@@ -45,11 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public String deleteProject(Long id) {
-        projectRepository.findById(id)
-                .orElseThrow(() -> {
-                    LOGGER.log(ProjectMessage.PROJECT_NOT_FOUND + id, HttpStatus.NOT_FOUND);
-                    return null;
-                });
+        findProjectById(id);
 
         projectRepository.deleteById(id);
 
@@ -60,12 +55,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public String updateProject(Long projectId, ProjectDto projectDto) {
-        Project existingProject = projectRepository.findById(projectId)
-                .orElseThrow(() -> {
-                    LOGGER.log(ProjectMessage.PROJECT_NOT_FOUND + projectId, HttpStatus.NOT_FOUND);
-                    return null;
-                });
+        Project existingProject = findProjectById(projectId);
 
+        assert existingProject != null;
         existingProject.setProjectName(projectDto.getProjectName());
         existingProject.setStartDate(projectDto.getStartDate());
         existingProject.setEndDate(projectDto.getEndDate());
@@ -90,11 +82,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto getProjectById(Long id) {
-        Project project = projectRepository.findById(id)
+        Project project = findProjectById(id);
+        return projectMapper.toDto(project);
+    }
+
+    private Project findProjectById(Long id) {
+        return projectRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.log(ProjectMessage.PROJECT_NOT_FOUND + id, HttpStatus.NOT_FOUND);
                     return null;
                 });
-        return projectMapper.toDto(project);
     }
 }

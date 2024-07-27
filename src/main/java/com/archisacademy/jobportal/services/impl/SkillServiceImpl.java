@@ -36,7 +36,7 @@ public class SkillServiceImpl implements SkillService {
     public String createSkill(SkillDto skillDto) {
         Skill skill = skillMapper.toEntity(skillDto);
         skill.setProfile(profileService.getProfileEntityById(skillDto.getProfileId()));
-        Skill savedSkill=skillsRepository.save(skill);
+        Skill savedSkill = skillsRepository.save(skill);
         return SkillsMessage.SKILL_CREATED + savedSkill.getId();
     }
 
@@ -74,8 +74,9 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillDto getSkillById(Long id) {
         Optional<Skill> optionalSkill = skillsRepository.findById(id);
-        if (optionalSkill.isEmpty()){
+        if (optionalSkill.isEmpty()) {
             LOGGER.log(SkillsMessage.SKILLS_NOT_FOUND + id, HttpStatus.NOT_FOUND);
+            return null;
         }
         return skillMapper.toDto(optionalSkill.get());
     }
